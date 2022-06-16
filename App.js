@@ -6,14 +6,27 @@ import { TextInput } from 'react-native';
 export default function App() {
   const [school_text, set_stext] = useState("");
   const [show, setShow] = useState(true);
+  const [school_list, set_slist] = useState([]);
+  const [school_show, set_sshow] = useState(false);
   const onChangeText = (payload) => {set_stext(payload);
-    if (payload == "") {
-      
-      setShow(true);
-      
+    
+    const key = '$2y$10$Xhq2waB7rfkvd4O9lIWFXe0T5f3RQ7yCG3kEalkdsrLeCUMakswL2'
+    const url = `https://api.winsub.kr/school/?key=${key}&name=${payload}`
+    fetch(url).then(res => res.json()).then( data => {
+      if (data.length == 0) {
+        set_sshow(true)
+      } else {
+        set_slist(data)
+        set_sshow(false)
+      }
+    })
+    if (payload == "" || school_text == "") {
+      set_sshow(false)
     } else {
-      setShow(false);
-    }}
+    }
+  }
+
+  const list = school_show ? (<View></View>) : school_list.map((school) => (<View><Text style={styles.main_text  }>{ school.schulNm }</Text></View>))
   const s = StyleSheet.create(
     {scsetting_cont: {
       justifyContent: `${ show ? 'center': 'flex-start'}`,
@@ -37,7 +50,8 @@ export default function App() {
           </View>:
           <View style={s.scsetting_cont}>
             { show && <Text style={styles.scsetting_text}>{`학교를 설정해주세요`}</Text>}
-            <TextInput onChangeText={onChangeText} value={school_text} returnKeyType="send" style={styles.input} placeholder="학교 이름을 입력해주세요."/>
+            { show && <TextInput onChangeText={onChangeText} value={school_text} returnKeyType="send" style={styles.input} placeholder="학교 이름을 입력해주세요."/>}
+            { list }
           </View>
         }
       </View>
