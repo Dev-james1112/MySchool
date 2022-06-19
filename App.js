@@ -1,39 +1,39 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { TextInput } from 'react-native';
 
 export default function App() {
-  const [school_text, set_stext] = useState("");
   const [show, setShow] = useState(true);
-  const [school_list, set_slist] = useState([]);
-  const [school_show, set_sshow] = useState(false);
-  const onChangeText = (payload) => {set_stext(payload);
-    
+
+  const onChangeText = async (payload) => {
+
     const key = '$2y$10$Xhq2waB7rfkvd4O9lIWFXe0T5f3RQ7yCG3kEalkdsrLeCUMakswL2'
     const url = `https://api.winsub.kr/school/?key=${key}&name=${payload}`
-    fetch(url).then(res => res.json()).then( data => {
+    await fetch(url).then(res => res.json()).then( data => {
       if (data.length == 0) {
-        set_sshow(true)
+        setlist()
       } else {
-        set_slist(data)
-        set_sshow(false)
-      }
-    })
-    if (payload == "" || school_text == "") {
-      set_sshow(false)
-    } else {
-    }
+          if (payload == "" || payload == "" || payload == undefined || payload == null) {
+              setShow(true)
+              setlist(<View></View>) 
+          }else { 
+            setShow(true)
+            setlist(data.map(school => (<View key={school.schulCode} style={styles.school_box} ><Text key={school.schulCode} style={styles.main_text  }>{ school.schulNm }</Text></View>)))
+          }
+      } 
+    }) 
   }
+  const [list, setlist] = useState();
 
-  const list = school_show ? (<View></View>) : school_list.map((school) => (<View><Text style={styles.main_text  }>{ school.schulNm }</Text></View>))
+
   const s = StyleSheet.create(
     {scsetting_cont: {
-      justifyContent: `${ show ? 'center': 'flex-start'}`,
-      marginTop: 30,
+      justifyContent: 'flex-start',
+      marginTop: 10,
       textAlignVertical: 'center',
       width: '90%',
-      height: '80%',
+      height: '100%',
       alignSelf: 'center',
     },}
   )
@@ -50,8 +50,8 @@ export default function App() {
           </View>:
           <View style={s.scsetting_cont}>
             { show && <Text style={styles.scsetting_text}>{`학교를 설정해주세요`}</Text>}
-            { show && <TextInput onChangeText={onChangeText} value={school_text} returnKeyType="send" style={styles.input} placeholder="학교 이름을 입력해주세요."/>}
-            { list }
+            { show && <TextInput onChangeText={ onChangeText} returnKeyType="send" style={styles.input} placeholder="학교 이름을 입력해주세요."/>}
+            <ScrollView style={styles.school_content}>{ list }</ScrollView>
           </View>
         }
       </View>
@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
+
   },
   header:{
     flexDirection: 'row',
@@ -101,5 +102,18 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 20,
     fontSize: 15  
+  },
+  school_box: {
+    backgroundColor:'#3C3D40',
+    height: 70,
+    borderRadius: 20,
+    marginTop: 14,
+    padding: 10,
+  }, 
+  school_content: {
+    height: '100%',
+    margin: 0,
+    padding: 0
+
   }
 });
