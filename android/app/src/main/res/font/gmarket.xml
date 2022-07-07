@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font app:fontStyle="normal" app:fontWeight="100" app:font="@font/gmarketsansttflight" />
+    <font app:fontStyle="normal" app:fontWeight="200" app:font="@font/gmarketsansttfmedium"/>
+    <font app:fontStyle="normal" app:fontWeight="300" app:font="@font/gmarketsansttfbold" />
+</font-family>
