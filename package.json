@@ -11,9 +11,18 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.7",
-    "react": "18.0.0",
+    "@react-navigation/native": "^6.0.11",
+    "@react-navigation/native-stack": "^6.7.0",
+    "@react-navigation/stack": "^6.2.2",
+    "fbjs": "^3.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-native": "0.69.1",
-    "rnpm": "^1.9.0"
+    "react-native-gesture-handler": "^1.10.3",
+    "react-native-reanimated": "^2.9.1",
+    "react-native-safe-area-context": "^4.3.1",
+    "react-native-screens": "^3.15.0",
+    "rnpm": "^1.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -28,5 +37,4 @@
   "jest": {
     "preset": "react-native"
   }
-
 }

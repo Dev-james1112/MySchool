@@ -1,5 +1,8 @@
 import React from "react";
 import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
+import {  NativeSyntheticEvent,    TextInputChangeEventData } from 'react-native';
+
+
 const s = StyleSheet.create({
     main: {
         backgroundColor: "#F46413",
@@ -25,10 +28,10 @@ const s = StyleSheet.create({
         lineHeight: 14,
     }
 })
-const Tbutton = (props) => {
+const Tbutton = (props, {navigation}) => {
     return (
         <>
-            <TouchableOpacity onPress={() => alert("asdf")} style={s.main} >
+            <TouchableOpacity onPress={props.call} style={s.main} >
                 <Text style={s.text}> {props.children}</Text>
             </TouchableOpacity>
             {props.footer ? <Text style={s.footer}>{props.footer}</Text> : <></>}
