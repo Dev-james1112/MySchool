@@ -2,7 +2,6 @@ import React from "react";
 import { Text, StyleSheet, TextInput, View } from "react-native";
 import {  NativeSyntheticEvent,    TextInputChangeEventData } from 'react-native';
 
-
 const s = StyleSheet.create({
     main: {
         paddingTop: 20
