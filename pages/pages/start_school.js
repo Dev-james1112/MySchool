@@ -6,6 +6,7 @@ import Tbutton from '../../assets/components/Button';
 import Tinput from '../../assets/components/Input';
 
 
+
 function Setsc({navigation}) {
     // Get school list
     let list = [];
@@ -43,6 +44,7 @@ function Setsc({navigation}) {
             <Ttext text='학교를 알려주세요'/>
             <Tinput text='학교 이름' call={ setSchool }></Tinput>
             <ScrollView style={styles.con}>{ datas }</ScrollView>
+
         </View>
 
     );
