@@ -1,6 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
-import {  NativeSyntheticEvent,    TextInputChangeEventData } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
 
 const s = StyleSheet.create({
@@ -28,7 +27,7 @@ const s = StyleSheet.create({
         lineHeight: 14,
     }
 })
-const Tbutton = (props, {navigation}) => {
+const Tbutton = (props : any) => {
     return (
         <>
             <TouchableOpacity onPress={props.call} style={s.main} >
