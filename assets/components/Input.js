@@ -11,7 +11,6 @@ const s = StyleSheet.create({
         borderBottomWidth: 2 ,
         height: 50,
         fontSize: 25,
-        color: '#111',
     },
 
     text: {
