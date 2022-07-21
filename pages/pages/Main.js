@@ -1,21 +1,10 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { saveSchool, loadSchool } from '../../assets/scripts/AsyncStorage';
-
-const Stack = createStackNavigator();
-
+import { View, StyleSheet } from 'react-native';
 
 import {Ttext, Stext} from '../../assets/components/Text';
 import Tbutton from '../../assets/components/Button';
 
-import Setsc from './start_school';
-
-
 function Main({navigation}) {
-
   return (
     <View style={styles.main}>
         <View>
@@ -25,7 +14,7 @@ function Main({navigation}) {
         </View>
         <View style={styles.footer}>
             <Tbutton footer='지금 바로 시작해볼까요?' call={()=>navigation.navigate("Set")}>
-                 시작하기
+                시작하기
             </Tbutton>
 
         </View>
@@ -47,4 +36,5 @@ const styles = StyleSheet.create({
         bottom: 20
     },
 });
+
 export default Main;

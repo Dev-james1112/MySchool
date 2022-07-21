@@ -1,5 +1,5 @@
-import React, {Component, useState} from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import React from 'react';
+import {View, Image, StyleSheet} from 'react-native';
 import {Ttext, Stext} from '../../assets/components/Text';
 import Tbutton from '../../assets/components/Button';
 

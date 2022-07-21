@@ -1,6 +1,14 @@
 import React from "react";
 import { Text, StyleSheet, TextInput, View } from "react-native";
-import {  NativeSyntheticEvent,    TextInputChangeEventData } from 'react-native';
+
+const Tinput = (props) => {
+    return (
+        <View style={s.main}>
+            <Text style={s.text}>{props.text}</Text>
+            <TextInput style={s.input} onChangeText={props.call} selectionColor="#F46413" />
+        </View>
+    );
+};
 
 const s = StyleSheet.create({
     main: {
@@ -32,14 +40,4 @@ const s = StyleSheet.create({
         lineHeight: 14,
     }
 })
-const Tinput = (props) => {
-    return (
-        <View style={s.main}>
-            <Text style={s.text}>{props.text}</Text>
-            <TextInput style={s.input} onChangeText={props.call} selectionColor="#F46413" />
-
-        </View>
-    );
-};
-
 export default Tinput;

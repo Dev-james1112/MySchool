@@ -1,18 +1,22 @@
+// Built-In Modules Import
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import "react-native-gesture-handler";
-import { saveSchool, loadSchool } from './assets/scripts/AsyncStorage';
 
+// Scripts Modules Import
+import { loadSchool } from './assets/scripts/AsyncStorage';
+
+// Pages Import
 import Main from './pages/pages/Main';
 import Setsc from './pages/pages/start_school';
 import SetCom from './pages/pages/school_set_complete';
 
+// Config
 const Stack = createStackNavigator();
 
 function App()  {
-    const [school_data, setSchool_data] = useState("ff");
+    const [school_data, setSchool_data] = useState("");
     useEffect (() => {
         loadSchool().then(data => setSchool_data(data))
     }, []);
@@ -25,14 +29,11 @@ function App()  {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" screenOptions={{headerStyle: {backgroundColor: '#fff'}}}>
-
         <Stack.Screen name="Home" component={Main} options={{ headerShown: false }}/>
         <Stack.Screen name="Set" component={Setsc} options={{ title: '' }}/>
         <Stack.Screen name="SetCom" component={SetCom} options={{ title: '' ,  headerStyle: {backgroundColor: '#F7F7F7'}}}/>
       </Stack.Navigator>
-
     </NavigationContainer>
-
   )
 };
 

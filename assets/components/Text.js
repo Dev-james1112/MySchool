@@ -1,5 +1,20 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
+
+const Ttext = (props) => {
+    return (
+        <Text style={s.main}>{props.text}</Text>
+    );
+};
+
+const Stext = (props) => {
+    if(props.start) {
+        return(<Text style={s.s_sub}>{props.text}</Text>)
+    } else {
+        return(<Text style={s.sub}>{props.text}</Text>)
+    }
+};
+
 const s = StyleSheet.create({
     main: {
         fontSize: 22,
@@ -32,19 +47,4 @@ const s = StyleSheet.create({
     }
 
 })
-const Ttext = (props) => {
-    return (
-        <Text style={s.main}>{props.text}</Text>
-
-    );
-};
-
-const Stext = (props) => {
-    if(props.start) {
-        return(<Text style={s.s_sub}>{props.text}</Text>)
-    } else {
-        return(<Text style={s.sub}>{props.text}</Text>)
-    }
-
-};
 export {Ttext, Stext};

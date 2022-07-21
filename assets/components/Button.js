@@ -1,7 +1,17 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
-import {  NativeSyntheticEvent,    TextInputChangeEventData } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
+const Tbutton = (props,) => {
+    return (
+        <>
+            <TouchableOpacity onPress={props.call} style={s.main} >
+                <Text style={s.text}> {props.children}</Text>
+            </TouchableOpacity>
+            {props.footer ? <Text style={s.footer}>{props.footer}</Text> : <></>}
+
+        </>
+    );
+};
 
 const s = StyleSheet.create({
     main: {
@@ -28,16 +38,5 @@ const s = StyleSheet.create({
         lineHeight: 14,
     }
 })
-const Tbutton = (props, {navigation}) => {
-    return (
-        <>
-            <TouchableOpacity onPress={props.call} style={s.main} >
-                <Text style={s.text}> {props.children}</Text>
-            </TouchableOpacity>
-            {props.footer ? <Text style={s.footer}>{props.footer}</Text> : <></>}
-
-        </>
-    );
-};
 
 export default Tbutton;
