@@ -14,7 +14,7 @@ async function loadSchool() {
 
     } else {
         console.log(s)
-        return "true";
+        return "false";
     }
 
 }

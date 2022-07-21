@@ -4,14 +4,19 @@ import {View, Text, Button, StyleSheet, TouchableOpacity, ScrollView} from 'reac
 import {Ttext, Stext} from '../../assets/components/Text';
 import Tbutton from '../../assets/components/Button';
 import Tinput from '../../assets/components/Input';
-
-
+import { saveSchool } from '../../assets/scripts/AsyncStorage';
+import { SetCom } from './school_set_complete';
 
 function Setsc({navigation}) {
     // Get school list
     let list = [];
     const [show, setShow] = useState(true);
     const [datas, setData] = useState(<View></View>);
+    const setSchoolId = (schoolId) => {
+        saveSchool(schoolId)
+        navigation.navigate('SetCom');
+    }
+
     const setSchool = (text) => {
         const key = '6c8bda44c1d949b88a48a7d0bb3a8205'
         const url = `https://open.neis.go.kr/hub/schoolInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=10&SCHUL_NM=${text}`
@@ -23,7 +28,7 @@ function Setsc({navigation}) {
                     count ++;
                     arr[count] = {SD_SCHUL_CODE: i.SD_SCHUL_CODE, SCHUL_NM: i.SCHUL_NM, ORG_RDNMA: i.ORG_RDNMA}
                 }
-                setData(arr.map((i) => <TouchableOpacity style={styles.school_box} onPress={() => {i.SD_SCHUL_CODE}} key={i.SD_SCHOOL_CODE, i.ORG_RDNMA}><Text key={i.SD_SCHOOL_CODE} style={styles.school_main_text}>{i.SCHUL_NM}</Text><Text key={i.SD_SCHOOL_CODE, i.SD_SCHUL_CODE} style={styles.school_sub_text}>{i.ORG_RDNMA}</Text></TouchableOpacity>));
+                setData(arr.map((i) => <TouchableOpacity style={styles.school_box} onPress={() => setSchoolId(i.SD_SCHUL_CODE)} key={i.SD_SCHOOL_CODE, i.SCHUL_NM}><Text key={i.SD_SCHOOL_CODE} style={styles.school_main_text}>{i.SCHUL_NM}</Text><Text key={i.SD_SCHOOL_CODE, i.SD_SCHUL_CODE} style={styles.school_sub_text}>{i.ORG_RDNMA}</Text></TouchableOpacity>));
             } else {
                 try {
                     if (data.RESULT.MESSAGE == "해당하는 데이터가 없습니다.") {
