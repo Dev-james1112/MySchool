@@ -8,8 +8,10 @@ import { saveSchool } from '../../assets/scripts/AsyncStorage';
 function Setsc({navigation}) {
     // Get school list
     const [datas, setData] = useState(<View></View>);
-    const setSchoolId = (schoolId) => {
-        saveSchool(schoolId)
+    const setSchoolId = (schoolId, schoolName, regionCode) => {
+        saveSchool("@ID", schoolId)
+        saveSchool("@NM", schoolName)
+        saveSchool("@REGION", regionCode)
         navigation.navigate('SetCom');
     }
 
@@ -23,9 +25,10 @@ function Setsc({navigation}) {
                 var count = -1;
                 for (let i of data["schoolInfo"][1]["row"]) {
                     count ++;
-                    arr[count] = {SD_SCHUL_CODE: i.SD_SCHUL_CODE, SCHUL_NM: i.SCHUL_NM, ORG_RDNMA: i.ORG_RDNMA};
+                    arr[count] = {SD_SCHUL_CODE: i.SD_SCHUL_CODE, SCHUL_NM: i.SCHUL_NM, ORG_RDNMA: i.ORG_RDNMA, COUNT: count,ATPT_OFCDC_SC_CODE: i.ATPT_OFCDC_SC_CODE};
+
                 }
-                setData(arr.map((i) => <TouchableOpacity style={styles.school_box} onPress={() => setSchoolId(i.SD_SCHUL_CODE)} key={i.SD_SCHOOL_CODE}><Text key={i.SD_SCHOOL_CODE} style={styles.school_main_text}>{i.SCHUL_NM}</Text><Text key={i.SD_SCHUL_CODE} style={styles.school_sub_text}>{i.ORG_RDNMA}</Text></TouchableOpacity>));
+                setData(arr.map((i) => <TouchableOpacity style={styles.school_box} onPress={() => setSchoolId(i.SD_SCHUL_CODE, i.SCHUL_NM, i.ATPT_OFCDC_SC_CODE)} key={i.COUNT+1}><Text key={i} style={styles.school_main_text}>{i.SCHUL_NM}</Text><Text key={i.COUNT} style={styles.school_sub_text}>{i.ORG_RDNMA}</Text></TouchableOpacity>));
             } else {
                 try {
                     if (data.RESULT.MESSAGE == "해당하는 데이터가 없습니다.") {

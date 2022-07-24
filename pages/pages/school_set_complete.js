@@ -14,7 +14,7 @@ function SetCom({navigation}) {
                     style={styles.image}
                 />
             <View style={styles.footer}>
-                <Tbutton>오늘의 급식 확인해보기</Tbutton>
+                <Tbutton call= {()=>navigation.navigate("Meal")}>오늘의 급식 확인해보기</Tbutton>
             </View>
         </View>
 

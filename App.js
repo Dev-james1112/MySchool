@@ -11,6 +11,8 @@ import { loadSchool } from './assets/scripts/AsyncStorage';
 import Main from './pages/pages/Main';
 import Setsc from './pages/pages/start_school';
 import SetCom from './pages/pages/school_set_complete';
+import Meal from './pages/pages/meal';
+import Meal_more from './pages/pages/meal_more';
 
 // Config
 const Stack = createStackNavigator();
@@ -18,9 +20,8 @@ const Stack = createStackNavigator();
 function App()  {
     const [school_data, setSchool_data] = useState("");
     useEffect (() => {
-        loadSchool().then(data => setSchool_data(data))
+        loadSchool("@NM").then(data => setSchool_data(data))
     }, []);
-    console.log(school_data)
 /*{school_data == "false" ? (<Stack.Group>
             <Stack.Screen name="Home" component={Main} options={{ headerShown: false }}/>
             <Stack.Screen name="Set" component={Setsc} options={{ title: '' }}/>
@@ -32,6 +33,8 @@ function App()  {
         <Stack.Screen name="Home" component={Main} options={{ headerShown: false }}/>
         <Stack.Screen name="Set" component={Setsc} options={{ title: '' }}/>
         <Stack.Screen name="SetCom" component={SetCom} options={{ title: '' ,  headerStyle: {backgroundColor: '#F7F7F7'}}}/>
+        <Stack.Screen name="Meal" component={Meal} options={{ headerShown: false }}/>
+        <Stack.Screen name="Meal_more" component={Meal_more} options={{ title: '급식 정보' }}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
