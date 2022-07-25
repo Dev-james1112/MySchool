@@ -15,7 +15,7 @@ function Meal({navigation}) {
     const month = ('0' + (today.getMonth()+1).toString()).slice(-2)  // 월
     const date = ('0' + today.getDate().toString()).slice(-2);  // 날짜
 
-    const YYYYMMDD = year + month + date
+    const YYYYMMDD = year + '03' + date
     useEffect (() => {
         loadSchool("@NM").then(data => setSchool_NM_data(data))
         loadSchool("@ID").then(data => setSchool_ID_data(data))
@@ -25,7 +25,7 @@ function Meal({navigation}) {
     const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=3&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${YYYYMMDD}&MLSV_TO_YMD=${YYYYMMDD}`
     fetch(url).then(res => res.json()).then( data => {
         if (data['mealServiceDietInfo'] != undefined) {
-            setMeal_data(<Text>{JSON.stringify(data['mealServiceDietInfo'][1]['row'][0]['DDISH_NM']).replace(/["']/g, "").replace(/<br\/>/g, "\n")}</Text>);
+            setMeal_data(<Text style={styles.meal_text}>{JSON.stringify(data['mealServiceDietInfo'][1]['row'][0]['DDISH_NM']).replace(/["']/g, "").replace(/<br\/>/g, "\n")}</Text>);
         } else {
             setMeal_data(<Text style={styles.error}>어라? 등록된 급식 정보가 없네요.</Text>)
         }
@@ -35,15 +35,20 @@ function Meal({navigation}) {
         <View style={styles.main}>
             <View style={styles.gnb}>
                 <Ttext text='오늘 급식' style={styles.main_text}/>
-                <TouchableOpacity onPress={() => navigation.navigate('Set')} style={styles.change_school}><Text>학교 바꾸기</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Set')} style={styles.change_school}><Text style={styles.change_school_text}>학교 바꾸기</Text></TouchableOpacity>
             </View>
             <View style={styles.con_meal}>
                 <View style={styles.meal_head}>
                     <Text style={styles.header_bar}><Text style={styles.header_school_text}>{school_NM_data}</Text><Text style={styles.header_text}>의 오늘 급식</Text></Text>
-                    <TouchableOpacity style={styles.more} onPress={() => navigation.navigate("Meal_more")}><Text>더보기</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.more} onPress={() => navigation.navigate("Meal_more")}><Text style={styles.more_text}>더보기</Text></TouchableOpacity>
                 </View>
                 {meal_data}
             </View>
+            <View style={styles.con_meal}>
+                <View style={styles.meal_head}>
+                    <Text style={styles.header_bar}><Text style={styles.header_text}>광고</Text></Text>
+                </View>
+            </View> 
         </View>
 
     )
@@ -51,20 +56,29 @@ function Meal({navigation}) {
 
 const styles = StyleSheet.create({
     main:  {
-        backgroundColor: "#fff",
+        backgroundColor: "#F4F4F4",
         height: "100%",
         wight: "100%",
-        paddingHorizontal: 30,
+        paddingHorizontal: 24,
         paddingTop: 30,
         
     },
     con_meal: {
-        backgroundColor: "#f7f7f7",
-        borderRadius: 14,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 20,
         padding: 16, 
         paddingTop: 8,
-        marginTop: 10,
+        marginTop: 20,
         whiteSpace: "pre-wrap",
+        shadowColor: "#7090B0",
+        shadowOffset: {
+            width: 0,
+            height: 8,
+        },  
+        shadowOpacity: 0.15  ,
+        shadowRadius: 24,
+
+        elevation: 5,
     },
     header_text :{
         fontFamily: "Noto Sans KR",
@@ -89,18 +103,26 @@ const styles = StyleSheet.create({
         color: "#595959",
         lineHeight: 70,
         textAlign: "center",
-        justifyContent: "center",
     },
     change_school: { 
-        alignSelf: "flex-end",
+        flex: 1,
+        alignItems: "flex-end",
+        alignSelf: "center",
+        paddingRight: 10,
+    },
+    change_school_text: {
+        fontFamily: "Noto Sans KR",
+        fontWeight: "500",
+        fontSize: 14,
+        lineHeight: 20,
+        color: "#808080",
     },
     gnb: {
         display: "flex",
-        justifyContent: "space-between",
+        flexDirection: "row",
     },
     main_text: {
-        alignSelf: "flex-start",
-
+        flex: 1,
     },
     meal_head: {
         display: "flex",
@@ -109,10 +131,17 @@ const styles = StyleSheet.create({
         flexWrap: "nowrap",
     },
     more: {
-        alignSelf: "flex-end",
+        alignSelf: "center",
     },
     header_bar: {
         flex: 1
+    },
+    more_text: {
+        color: "#F46413"
+    },
+    meal_text: {
+        marginTop: 6,
+        fontSize: 18,
     }
 });
 

@@ -34,7 +34,7 @@ function App()  {
         <Stack.Screen name="Set" component={Setsc} options={{ title: '' }}/>
         <Stack.Screen name="SetCom" component={SetCom} options={{ title: '' ,  headerStyle: {backgroundColor: '#F7F7F7'}}}/>
         <Stack.Screen name="Meal" component={Meal} options={{ headerShown: false }}/>
-        <Stack.Screen name="Meal_more" component={Meal_more} options={{ title: '급식 정보' }}/>
+        <Stack.Screen name="Meal_more" component={Meal_more} options={{ title: '급식 정보' ,  headerStyle: {backgroundColor: '#FBFBFB'}}}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
