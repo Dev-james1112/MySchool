@@ -14,13 +14,10 @@ function Meal({navigation}) {
     const year = today.getFullYear().toString(); // 년도
     const month = ('0' + (today.getMonth()+1).toString()).slice(-2)  // 월
     const date = ('0' + today.getDate().toString()).slice(-2);  // 날짜
-
-    const YYYYMMDD = year + '03' + date
-    useEffect (() => {
-        loadSchool("@NM").then(data => setSchool_NM_data(data))
-        loadSchool("@ID").then(data => setSchool_ID_data(data))
-        loadSchool("@REGION").then(data => setSchool_REGION_data(data))
-    }, []);
+    loadSchool("@NM").then(data => setSchool_NM_data(data))
+    loadSchool("@ID").then(data => setSchool_ID_data(data))
+    loadSchool("@REGION").then(data => setSchool_REGION_data(data))
+    const YYYYMMDD = year + month    + date
     const key = '6c8bda44c1d949b88a48a7d0bb3a8205'
     const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=3&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${YYYYMMDD}&MLSV_TO_YMD=${YYYYMMDD}`
     fetch(url).then(res => res.json()).then( data => {
@@ -44,11 +41,6 @@ function Meal({navigation}) {
                 </View>
                 {meal_data}
             </View>
-            <View style={styles.con_meal}>
-                <View style={styles.meal_head}>
-                    <Text style={styles.header_bar}><Text style={styles.header_text}>광고</Text></Text>
-                </View>
-            </View> 
         </View>
 
     )

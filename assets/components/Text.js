@@ -17,7 +17,7 @@ const Stext = (props) => {
 
 const s = StyleSheet.create({
     main: {
-        fontSize: 22,
+        fontSize: 25,
         color: "#0D0D0D",
         fontFamily: "Noto Sans KR",
         fontStyle: "normal",
@@ -26,8 +26,8 @@ const s = StyleSheet.create({
 
     },
     sub: {
-        fontSize: 16,
-        color: "#737373",
+        fontSize: 15,
+        color: "#808080",
         fontFamily: "Noto Sans KR",
         fontStyle: "normal",
         fontWeight: "500",
@@ -35,13 +35,13 @@ const s = StyleSheet.create({
 
         },
     s_sub: {
-        fontSize: 16,
-        color: "#737373",
+        fontSize: 15,
+        color: "#808080",
         fontFamily: "Noto Sans KR",
         fontStyle: "normal",
         fontWeight: "500",
         lineHeight: 20,
-        paddingTop: 20
+        paddingTop: 16
 
 
     }

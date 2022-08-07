@@ -8,8 +8,9 @@ async function saveSchool(KEY, toSave) {
 
 async function loadSchool(KEY) {
     const s = await AsyncStorage.getItem(KEY)
-    if (s  == null) {
-        return "false";
+
+    if (s  == null || s == '""' || s == undefined) {
+        return "값없음";
     } else {
         return s.replace(/\"/g, "");
     }
