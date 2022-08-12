@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
         bottom: 20
     },
     plate: {
-        width: '80%',
-        marginTop: -0,
+        width: '70%',
+        marginTop: -70,
         marginRight: 30,
         alignSelf: 'center',
         resizeMode: 'contain',

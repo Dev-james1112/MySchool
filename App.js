@@ -30,9 +30,9 @@ function App()  {
     } else {
       setInitial_home("Meal");
     } 
-  }, [school_data])
+  }, [initial_home])
   useEffect(()=>{
-    const timer = setTimeout(()=>{ alertSet(true) }, 10);
+    const timer = setTimeout(()=>{ alertSet(true) }, 1000);
   });
   return (
     <NavigationContainer>
