@@ -10,7 +10,7 @@ function Meal({ navigation }) {
     const [school_REGION_data, setSchool_REGION_data] = useState();
     const [school_REGION_NM_data, setSchool_REGION_NM_data] = useState();
     const [meal_data, setMeal_data] = useState(
-        <Text style={styles.error}>급식을 찾을수 없어요</Text>
+        <Text style={styles.error}>오늘의 급식을 찾을수 없어요</Text>
     );
     const today = new Date();
 
@@ -21,29 +21,32 @@ function Meal({ navigation }) {
     loadSchool("@ID").then((data) => setSchool_ID_data(data));
     loadSchool("@REGION").then((data) => setSchool_REGION_data(data));
     loadSchool("@REGION_NM").then((data) => setSchool_REGION_NM_data(data));
-    const YYYYMMDD = year + month + date;
+    const YYYYMMDD = year + month + 18;
     const key = "6c8bda44c1d949b88a48a7d0bb3a8205";
-    const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=3&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${YYYYMMDD}&MLSV_TO_YMD=${YYYYMMDD}`;
-    fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-            if (data["mealServiceDietInfo"] != undefined) {
-                setMeal_data(
-                    <Text style={styles.meal_text}>
-                        {JSON.stringify(
-                            data["mealServiceDietInfo"][1]["row"][0]["DDISH_NM"]
-                        )
-                            .replace(/["']/g, "")
-                            .replace(/<br\/>/g, "\n")}
-                    </Text>
-                );
-            }
-        });
+    setTimeout(() => {
+            const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=1&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${YYYYMMDD}&MLSV_TO_YMD=${YYYYMMDD}`;
+            fetch(url)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data["mealServiceDietInfo"] != undefined) {
+                        setMeal_data(
+                            <Text style={styles.meal_text}>
+                                {JSON.stringify(
+                                    data["mealServiceDietInfo"][1]["row"][0]["DDISH_NM"]
+                                )
+                                    .replace(/["']/g, "")
+                                    .replace(/<br\/>/g, "\n")}
+                            </Text>
+                        );
+                    }
+                });
 
+      }, 10);
+    
     return (
         <View style={styles.main}>
             <View style={styles.gnb}>
-                <Ttext text="홈"></Ttext>
+                <Text style={styles.title}>홈</Text>
                 <TouchableOpacity
                     onPress={() => navigation.navigate("Set")}
                     style={styles.change_school}
@@ -64,18 +67,22 @@ function Meal({ navigation }) {
                 </View>
             </View>
             <View style={styles.con}>
-                <View style={styles.meal_head}>
-                    <Text style={styles.meal_header_bar}>
-                        <Text style={styles.meal_header_text}>급식</Text>
-                    </Text>
+                <View style={styles.con_head}>
+
                     <TouchableOpacity
-                        style={styles.more}
+
                         onPress={() => navigation.navigate("Meal_more")}
                     >
-                        <Image source={more_icon} style={styles.more_icon} />
+                        <View style={styles.con_more}>
+                            <Text style={styles.con_header_text}>
+                                오늘 급식
+                            </Text>
+                            <Image source={more_icon} style={styles.more_icon} />
+                        </View>
+                        <Text style={styles.con_text}>{meal_data}</Text>
                     </TouchableOpacity>
+
                 </View>
-                {meal_data}
             </View>
         </View>
     );
@@ -87,24 +94,13 @@ const styles = StyleSheet.create({
         height: "100%",
         wight: "100%",
         paddingHorizontal: 24,
-        paddingTop: 30,
+        paddingTop: 55,
     },
-    con: {
-        backgroundColor: "#f2f2f2",
-        borderRadius: 20,
-        padding: 24,
-        paddingTop: 22,
-        marginTop: 20,
-        display: "flex",
-        flexDirection: "row",
-    },
-
     header_sub_text: {
         fontSize: 12,
         color: "#F2F2F2",
     },
     header_school_text: {
-        fontFamily: "Noto Sans KR",
         fontWeight: "bold",
         fontSize: 22,
         lineHeight: 30,
@@ -113,7 +109,6 @@ const styles = StyleSheet.create({
     error: {
         marginTop: 6,
         fontSize: 16,
-        fontFamily: "Noto Sans KR",
         fontWeight: "500",
         color: "#595959",
         lineHeight: 70,
@@ -134,10 +129,6 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
     },
-
-
-
-
     school_con: {
         backgroundColor: "#35B992",
         borderRadius: 20,
@@ -145,26 +136,47 @@ const styles = StyleSheet.create({
         paddingTop: 22,
         marginTop: 20,
     },
-    meal_header_text: {
-        fontFamily: "Noto Sans KR",
+    title: {
+        fontSize: 31,
         fontWeight: "bold",
-        fontSize: 22,
-        lineHeight: 30,
-        color: "#000",
     },
-    more: {
-        flex: 1,
-        alignItems: "flex-end",
+
+
+
+
+    con: {
+        backgroundColor: "#f3f2f3",
+        borderRadius: 20,
+        padding: 24,
+        marginTop: 20,
+    },
+    con_header_text: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "#000",
         alignSelf: "center",
-        paddingRight: 10,
+    },
+    con_head: {
+        alignContent: "center",
+        justifyContent: "center",
+    },
+    con_more: {
+        alignItems: "flex-end",
+        justifyContent: "space-between",
+        flexDirection: "row",
+
     },
     more_icon: {
-        
+        height: 25,
+        width: 25,
+        color: "#FFF    ",
     },
-    meal_head: {
-        display: "flex",
-        flexDirection: "row",
-        width: "100%",
+    con_text: {
+        marginTop: 20,
+        fontSize: 16,
+        color: "#515151",
+        lineHeight: 20,
+
     }
 
 });
