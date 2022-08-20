@@ -1,4 +1,25 @@
 {
-  "name": "MySchool",
-  "displayName": "MySchool"
+  "expo": {
+    "name": "MySchool",
+    "slug": "myschool",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/content.png",
+    "userInterfaceStyle": "light",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "web": {
+      "favicon": "./assets/images/content.png"
+    },
+    "android": {
+      "package": "com.james1112.myschool"
+    }
+  }
 }
