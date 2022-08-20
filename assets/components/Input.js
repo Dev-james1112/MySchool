@@ -21,6 +21,7 @@ const s = StyleSheet.create({
     height: 50,
     fontSize: 25,
     color: "#111111",
+    
   },
 
   text: {
@@ -28,6 +29,6 @@ const s = StyleSheet.create({
     fontSize: 15,
     paddingTop: 10
   },
-  
+
 });
 export default Tinput;
