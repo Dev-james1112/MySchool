@@ -18,7 +18,7 @@ function SetCom({ navigation }) {
             </View>
             <View style={styles.footer}>
                 <Tbutton call={() => navigation.navigate("Meal")}>
-                    오늘의 급식 확인해보기
+                    시작하기
                 </Tbutton>
             </View>
         </View>
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     },
     image: {
         height: "70%",
-        width: "70%",
-        marginTop: 50,
+        width: 250,
+        marginTop: "10%",
         alignSelf: "center",
         resizeMode: "contain",
     },

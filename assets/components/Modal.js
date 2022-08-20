@@ -92,12 +92,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
     },
     modal_btn_cancel: {
-        width: "48%",
+        width: "47%",
         height: "100%",
         float: "left",
     },
     modal_btn_ok: {
-        width: "48%",
+        width: "47%",
         height: "100%",
         float: "right",
     },

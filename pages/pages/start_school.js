@@ -25,6 +25,13 @@ function Setsc({ navigation }) {
         saveSchool("@REGION_NM", regionName);
         setModal(true);
     };
+    const delSchoolId = (schoolId, schoolName, regionCode, regionName) => {
+        saveSchool("@ID", schoolId);
+        saveSchool("@NM", schoolName);
+        saveSchool("@REGION", regionCode);
+        saveSchool("@REGION_NM", regionName);
+        
+    };
     loadSchool("@NM").then((data) => setSchool_data(data));
     var header =
         datas == "" || datas == null ? (
@@ -33,6 +40,7 @@ function Setsc({ navigation }) {
                 <Ttext text="학교를 알려주세요" />
                 <Stext text="학교를 검색하신후" start={true} />
                 <Stext text="아래에서 선택해주세요" />
+                <Text> </Text>
             </>
         ) : (
             <></>
@@ -45,6 +53,7 @@ function Setsc({ navigation }) {
                     <Ttext text="학교를 알려주세요" />
                     <Stext text="학교를 검색하신후" start={true} />
                     <Stext text="아래에서 선택해주세요" />
+                    <Text> </Text>
                 </>
             ) : (
                 <></>
@@ -54,7 +63,10 @@ function Setsc({ navigation }) {
     const setSchool = (text) => {
         const key = "6c8bda44c1d949b88a48a7d0bb3a8205";
         const url = `https://open.neis.go.kr/hub/schoolInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=10&SCHUL_NM=${text}`;
-
+        if (text== "Delete") {
+            delSchoolId("값없음", "값없음", "값없음", "값없음");
+            navigation.navigate("Home");
+        }
         fetch(url)
             .then((res) => res.json())
             .then((data) => {
@@ -120,7 +132,8 @@ function Setsc({ navigation }) {
     return (
         <View style={styles.main}>
             {header}
-            <Tinput text="학교 이름" call={setSchool}></Tinput>
+            
+            <Tinput  text="학교 이름" call={setSchool} ></Tinput>
             <ScrollView style={styles.con}>{datas}</ScrollView>
             <StatusBar
                 animated={false}
@@ -158,25 +171,22 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         marginTop: 5,
         borderRadius: 10,
-        backgroundColor: "#FEFEFE",
+        backgroundColor: "#FFF",
     },
     school_main_text: {
         fontSize: 16,
-        fontFamily: "Noto Sans KR",
         fontWeight: "500",
         color: "#000",
         lineHeight: 20,
     },
     school_sub_text: {
         fontSize: 12,
-        fontFamily: "Noto Sans KR",
         fontWeight: "400",
         color: "#595959",
         lineHeight: 16,
     },
     header_text: {
         fontSize: 16,
-        fontFamily: "Noto Sans KR",
         fontWeight: "500",
         color: "#595959",
         lineHeight: 150,
@@ -186,6 +196,7 @@ const styles = StyleSheet.create({
     con: {
         paddingTop: 10,
     },
+
 });
 
 export default Setsc;

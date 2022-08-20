@@ -40,16 +40,17 @@ const styles = StyleSheet.create({
     bottom: 20,
   },
   plate: {
-    width: "90%",
-    marginRight: 30,
-    bottom: 310,
-    alignSelf: "center",
+    width: 350,
+    height: "100%",
+    bottom: "5%",
     resizeMode: "contain",
-    justifyContent: "center",
-    alignItems: "center",
+    alignSelf: "center",
+
+
   },
   content: {
     height: "70%",
+    width: "100%",
   },
 });
 
