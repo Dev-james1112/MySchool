@@ -1,7 +1,7 @@
 // Built-In Modules Import
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "react-native";
-import { createStackNavigator  } from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
 import "react-native-gesture-handler";
@@ -64,9 +64,9 @@ function App() {
                     {
                       translateX: next
                         ? next.progress.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [0, -layouts.screen.width],
-                          })
+                          inputRange: [0, 1],
+                          outputRange: [0, -layouts.screen.width],
+                        })
                         : 1,
                     },
                   ],
@@ -88,7 +88,7 @@ function App() {
           <Stack.Screen
             name="SetComplete"
             component={SetCom}
-            options={{ title: "", headerShown: false} }
+            options={{ title: "", headerShown: false }}
           />
           <Stack.Screen
             name="Meal"
@@ -98,10 +98,7 @@ function App() {
           <Stack.Screen
             name="Meal_more"
             component={Meal_more}
-            options={{
-              title: "급식 정보",
-              headerStyle: { backgroundColor: "#FBFBFB" },
-            }}
+            options={{title: "급식 정보"}}
           />
         </Stack.Navigator>
       ) : null}
