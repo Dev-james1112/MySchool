@@ -23,26 +23,34 @@ function Meal({ navigation }) {
     loadSchool("@REGION_NM").then((data) => setSchool_REGION_NM_data(data));
     const YYYYMMDD = year + month + 18;
     const key = "6c8bda44c1d949b88a48a7d0bb3a8205";
-    setTimeout(() => {
-            const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=1&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${YYYYMMDD}&MLSV_TO_YMD=${YYYYMMDD}`;
-            fetch(url)
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data["mealServiceDietInfo"] != undefined) {
-                        setMeal_data(
-                            <Text style={styles.meal_text}>
-                                {JSON.stringify(
-                                    data["mealServiceDietInfo"][1]["row"][0]["DDISH_NM"]
-                                )
-                                    .replace(/["']/g, "")
-                                    .replace(/<br\/>/g, "\n")}
-                            </Text>
-                        );
-                    }
-                });
 
-      }, 10);
-    
+    const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=1&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${YYYYMMDD}&MLSV_TO_YMD=${YYYYMMDD}`;
+    useEffect(() => {
+        fetch(url)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data["mealServiceDietInfo"] != undefined) {
+                    setMeal_data(
+                        <Text style={styles.meal_text}>
+                            {JSON.stringify(
+                                data['mealServiceDietInfo'][1]['row'][0]['DDISH_NM']
+                            )
+                                .replace(/["']/g, "")
+                                .replace(/<br\/>/g, "\n")}
+                        </Text>
+                    );
+                } else {
+                    setMeal_data(
+
+                    );
+                }
+            });
+
+
+    }, [school_REGION_data]);
+
+
+
     return (
         <View style={styles.main}>
             <View style={styles.gnb}>

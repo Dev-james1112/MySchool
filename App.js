@@ -47,7 +47,10 @@ function App() {
         <Stack.Navigator
           initialRouteName={initial_home}
           screenOptions={{
-            headerStyle: { backgroundColor: "#fff" },
+            headerStyle: {
+              backgroundColor: "#fff",
+
+            },
             headerTitleAlign: "center",
             headerTitleStyle: { fontSize: 18 },
             headerShadowVisible: false,
@@ -98,7 +101,7 @@ function App() {
           <Stack.Screen
             name="Meal_more"
             component={Meal_more}
-            options={{title: "급식 정보"}}
+            options={{ title: "급식 정보" }}
           />
         </Stack.Navigator>
       ) : null}
