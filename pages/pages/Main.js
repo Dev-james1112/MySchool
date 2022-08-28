@@ -1,11 +1,14 @@
-import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import React, {useState} from "react";
+import { View, StyleSheet, Image, Text } from "react-native";
 
 import { Ttext, Stext } from "../../assets/components/Text";
 import { Tbutton } from "../../assets/components/Button";
+import { Cmodal, Smodal } from "../../assets/components/Custom_modal";
 import content from "../../assets/images/content.png";
 
 function Main({ navigation }) {
+  const [modal_open, SetModal] = useState(false);
+  //() => navigation.navigate("Set")
   return (
     <View style={styles.main}>
       <View style={styles.content}>
@@ -15,9 +18,17 @@ function Main({ navigation }) {
         <Image source={content} style={styles.plate} />
       </View>
       <View style={styles.footer}>
+        <Cmodal 
+          visible={modal_open}
+          title="아래 약관을 읽고 동의해주세요"
+          sub_title="약관은 나중에 변경될 수 있어요."
+          ok_text="확인했으며, 동의하기"
+          cancel={false}
+          ok={() => navigation.navigate("Set")}
+        ><><View><Text>asdf</Text></View></></Cmodal>
         <Tbutton
           footer="지금 바로 시작해볼까요?"
-          call={() => navigation.navigate("Set")}
+          call={() => SetModal(true)}
         >
           시작하기
         </Tbutton>

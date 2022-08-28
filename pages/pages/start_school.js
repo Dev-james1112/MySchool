@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF",
         height: "100%",
         wight: "100%",
-        paddingHorizontal: 25,
+        paddingHorizontal: 20,
         paddingTop: 20,
     },
     school_box: {

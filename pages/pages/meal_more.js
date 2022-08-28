@@ -34,7 +34,7 @@ function Meal_more() {
 
     return (
         <View style={styles.main}>
-            <Text style={styles.title}>급식</Text>
+            <Text style={styles.title}>{school_NM_data}</Text>
             <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>{meal_data}</ScrollView>
         </View>
     )
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     main: {
         backgroundColor: "#FFFFFF",
         width: "100%",
-        paddingHorizontal: 25,
+        paddingHorizontal: 20,
     },
     date: {
         fontSize: 20,
@@ -83,9 +83,8 @@ const styles = StyleSheet.create({
         paddingBottom: "20%",
     },
     title: {
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: "700",
-        lineHeight: 40,
         marginBottom: 20,
         color: "#000",
     }
