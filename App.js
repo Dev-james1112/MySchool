@@ -34,7 +34,7 @@ function App() {
     } else {
       setInitial_home("Meal");
     }
-  }, [initial_home]);
+  }, [initial_home, alert, school_data]);
   useEffect(() => {
     const timer = setTimeout(() => {
       alertSet(true);

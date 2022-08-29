@@ -21,7 +21,7 @@ function Meal({ navigation }) {
     loadSchool("@ID").then((data) => setSchool_ID_data(data));
     loadSchool("@REGION").then((data) => setSchool_REGION_data(data));
     loadSchool("@REGION_NM").then((data) => setSchool_REGION_NM_data(data));
-    const YYYYMMDD = year + month + 18;
+    const YYYYMMDD = year + month + date;
     const key = "6c8bda44c1d949b88a48a7d0bb3a8205";
 
     const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=1&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${YYYYMMDD}&MLSV_TO_YMD=${YYYYMMDD}`;
