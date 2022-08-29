@@ -6,7 +6,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 
-  <title>개인정보처리방침</title>
 </head>
 
 <body>
