@@ -12,9 +12,10 @@ function Meal_more() {
     const today = new Date();
     const year = today.getFullYear().toString(); // 년도
     const month = ('0' + (today.getMonth() + 1).toString()).slice(-2)  // 월
-
     const date = ('0' + today.getDate().toString()).slice(-2);  // 날짜
     const YYYYMMDD = year + month + date
+    const week = ['일', '월', '화', '수', '목', '금', '토'];
+    const day = week[today.getDay()];
     useEffect(() => {
         loadSchool("@NM").then(data => setSchool_NM_data(data))
         loadSchool("@ID").then(data => setSchool_ID_data(data))
@@ -25,9 +26,9 @@ function Meal_more() {
     useEffect(() => {
         fetch(url).then(res => res.json()).then(data => {
             if (data['mealServiceDietInfo'] != undefined) {
-                setMeal_data(data['mealServiceDietInfo'][1]['row'].map(i => <View style={styles.meal_box} key={i['MLSV_TO_YMD']}><Text style={styles.date} key={i['MLSV_FROM_YMD']}>{i.MLSV_FROM_YMD.slice(0, 4)}년 {i.MLSV_FROM_YMD.slice(4, 6)}월 {i.MLSV_FROM_YMD.slice(6)}일</Text><Text style={styles.meal} key={i['DDISH_NM']['MLSV_YMD']}>{i.DDISH_NM.replace(/["']/g, "").replace(/<br\/>/g, "\n")}</Text></View>))
+                setMeal_data(data['mealServiceDietInfo'][1]['row'].map(i => <View style={styles.meal_box} key={i['MLSV_TO_YMD']}><Text style={i['MLSV_YMD'] == YYYYMMDD ? styles.TodayDate : styles.date} key={i['MLSV_FROM_YMD']}>{i.MLSV_FROM_YMD.slice(4, 6).replace(0, "")}월 {i.MLSV_FROM_YMD.slice(6).replace(0, "")}일 {week[new Date(i.MLSV_YMD.slice(0, 4) + "-" + i.MLSV_YMD.slice(4, 6) + "-" + i.MLSV_YMD.slice(6,8)).getDay()]}요일</Text><Text style={styles.meal} key={i['DDISH_NM']['MLSV_YMD']}>{i.DDISH_NM.replace(/["']/g, "").replace(/<br\/>/g, "\n").replace(/([\d.$])/g,"").replace(/(\()\)/g,"")}</Text></View>))
             } else {
-                setMeal_data("")
+                setMeal_data()
             }
         })
     }, [school_REGION_data])
@@ -37,6 +38,7 @@ function Meal_more() {
         <View style={styles.main}>
             <Text style={styles.title}>{school_NM_data}</Text>
             <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>{meal_data}</ScrollView>
+
         </View>
     )
 }
@@ -46,33 +48,34 @@ const styles = StyleSheet.create({
     main: {
         backgroundColor: "#FFFFFF",
         width: "100%",
-        paddingHorizontal: 20,
+        paddingHorizontal: 25,
     },
     date: {
-        fontSize: 20,
-        fontWeight: "700",
+        fontSize: 18,
+        fontWeight: "600",
         lineHeight: 30,
-        marginBottom: 6,
+        marginBottom: 8,
         color: "#000",
+        
     },
     TodayDate: {
-        fontSize: 20,
-        fontWeight: "700",
+        fontSize: 18,
+        fontWeight: "600",
         lineHeight: 30,
-        marginBottom: 6,
-        color: "#F46413",
+        marginBottom: 8,
+        color: "#0455BF",
     },
     meal: {
         fontSize: 16,
-        lineHeight: 20,
+        lineHeight: 21,
         paddingBottom: 10,
-        color: "#2D3033",
+        color: "#666666",
     },
     meal_box: {
-        backgroundColor: "#F3F2F3",
-        margin: 6,
-        borderRadius: 20,
-        padding: 12,
+
+        marginVertical: 6,
+
+        padding: 3,
     },
     header: {
         width: "100%",
@@ -84,10 +87,11 @@ const styles = StyleSheet.create({
         paddingBottom: "20%",
     },
     title: {
-        fontSize: 25,
+        fontSize: 24,
         fontWeight: "700",
         marginBottom: 20,
         color: "#000",
+        marginTop: 20
     }
 
 });
