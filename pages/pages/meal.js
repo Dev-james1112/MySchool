@@ -35,8 +35,7 @@ function Meal({ navigation }) {
                             {JSON.stringify(
                                 data['mealServiceDietInfo'][1]['row'][0]['DDISH_NM']
                             )
-                                .replace(/["']/g, "")
-                                .replace(/<br\/>/g, "\n")}
+                                .replace(/["']/g, "").replace(/<br\/>/g, "\n").replace(/([\d.$])/g, "").replace(/(\()\)/g, "")}
                         </Text>
                     );
                 } else {

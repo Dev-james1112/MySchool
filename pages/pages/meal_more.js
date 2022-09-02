@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { loadSchool } from '../../assets/scripts/AsyncStorage';
-
-//import {Tcalendar, TcalendarTop} from '../../assets/components/Calendar';
+//import Ttoggle from '../../assets/components/Toggle';
 
 function Meal_more() {
     const [school_NM_data, setSchool_NM_data] = useState();
@@ -15,7 +14,6 @@ function Meal_more() {
     const date = ('0' + today.getDate().toString()).slice(-2);  // 날짜
     const YYYYMMDD = year + month + date
     const week = ['일', '월', '화', '수', '목', '금', '토'];
-    const day = week[today.getDay()];
     useEffect(() => {
         loadSchool("@NM").then(data => setSchool_NM_data(data))
         loadSchool("@ID").then(data => setSchool_ID_data(data))
@@ -26,7 +24,15 @@ function Meal_more() {
     useEffect(() => {
         fetch(url).then(res => res.json()).then(data => {
             if (data['mealServiceDietInfo'] != undefined) {
-                setMeal_data(data['mealServiceDietInfo'][1]['row'].map(i => <View style={styles.meal_box} key={i['MLSV_TO_YMD']}><Text style={i['MLSV_YMD'] == YYYYMMDD ? styles.TodayDate : styles.date} key={i['MLSV_FROM_YMD']}>{i.MLSV_FROM_YMD.slice(4, 6).replace(0, "")}월 {i.MLSV_FROM_YMD.slice(6).replace(0, "")}일 {week[new Date(i.MLSV_YMD.slice(0, 4) + "-" + i.MLSV_YMD.slice(4, 6) + "-" + i.MLSV_YMD.slice(6,8)).getDay()]}요일</Text><Text style={styles.meal} key={i['DDISH_NM']['MLSV_YMD']}>{i.DDISH_NM.replace(/["']/g, "").replace(/<br\/>/g, "\n").replace(/([\d.$])/g,"").replace(/(\()\)/g,"")}</Text></View>))
+                setMeal_data(data['mealServiceDietInfo'][1]['row'].map(i =>
+                    <View style={styles.meal_box} key={i['MLSV_TO_YMD']}>
+                        <Text style={i['MLSV_YMD'] == YYYYMMDD ? styles.TodayDate : styles.date} key={i['MLSV_FROM_YMD']}>
+                            {i.MLSV_FROM_YMD.slice(4, 6).replace(0, "")}월 {i.MLSV_FROM_YMD.slice(6).replace(0, "")}일 {week[new Date(i.MLSV_YMD.slice(0, 4) + "-" + i.MLSV_YMD.slice(4, 6) + "-" + i.MLSV_YMD.slice(6, 8)).getDay()]}요일
+                        </Text>
+                        <Text style={styles.meal} key={i['DDISH_NM']['MLSV_YMD']}>
+                            {i.DDISH_NM.replace(/["']/g, "").replace(/<br\/>/g, "\n").replace(/([\d.$])/g, "").replace(/(\()\)/g, "")}
+                        </Text>
+                    </View>))
             } else {
                 setMeal_data()
             }
@@ -37,8 +43,17 @@ function Meal_more() {
     return (
         <View style={styles.main}>
             <Text style={styles.title}>{school_NM_data}</Text>
-            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>{meal_data}</ScrollView>
+            <View style={styles.toggle_box}>
+                <Text style={styles.alarm}>매일 아침 알림받기</Text>
 
+            </View>
+            <Text style={styles.line}></Text>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+            >
+                {meal_data}
+            </ScrollView>
         </View>
     )
 }
@@ -46,9 +61,11 @@ function Meal_more() {
 
 const styles = StyleSheet.create({
     main: {
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#fff",
         width: "100%",
+        height: "100%",
         paddingHorizontal: 25,
+
     },
     date: {
         fontSize: 18,
@@ -56,7 +73,6 @@ const styles = StyleSheet.create({
         lineHeight: 30,
         marginBottom: 8,
         color: "#000",
-        
     },
     TodayDate: {
         fontSize: 18,
@@ -91,9 +107,22 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         marginBottom: 20,
         color: "#000",
-        marginTop: 20
+        marginTop: 20,
+    },
+    alarm: {
+        fontSize: 16,
+        color: "#444",
+        marginBottom: 20,
+        paddingBottom: 20,
+        float: "left",
+    },
+    toggle: {
+        float: "right",
+    },
+    line:{
+        borderBottomColor: '#ddd',
+        borderBottomWidth: StyleSheet.hairlineWidth,
     }
-
-});
+})
 
 export default Meal_more;
