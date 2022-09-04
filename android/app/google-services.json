@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "15234705151",
-    "project_id": "today-meal-476e4",
-    "storage_bucket": "today-meal-476e4.appspot.com"
+    "project_number": "649798944443",
+    "project_id": "myschool-dd973",
+    "storage_bucket": "myschool-dd973.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:15234705151:android:117a40d52d6860f250ceca",
+        "mobilesdk_app_id": "1:649798944443:android:35765f5caa333e6a2f0b9e",
         "android_client_info": {
-          "package_name": "com.today_meal"
+          "package_name": "com.myschool"
         }
       },
       "oauth_client": [
         {
-          "client_id": "15234705151-js0uog4q3lloc8dr58uv7db7id2b47li.apps.googleusercontent.com",
+          "client_id": "649798944443-81st0ansbm27dst2l9r29ge2ldsflhfs.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDU583je7KzkU-uIRVc29f70sYZmyk5eOU"
+          "current_key": "AIzaSyAv3vzD5mvLOopb0vYyNW3CusNkr1wmZ1w"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "15234705151-js0uog4q3lloc8dr58uv7db7id2b47li.apps.googleusercontent.com",
+              "client_id": "649798944443-81st0ansbm27dst2l9r29ge2ldsflhfs.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

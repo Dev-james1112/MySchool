@@ -1,9 +1,9 @@
 // Built-In Modules Import
 import React, { useEffect, useState } from "react";
-import { StatusBar } from "react-native";
+import { StatusBar, Alert } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-
+import messaging from '@react-native-firebase/messaging';
 import "react-native-gesture-handler";
 
 // Scripts Modules Import
@@ -22,6 +22,13 @@ const Stack = createStackNavigator();
 
 
 function App() {
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
   const [school_data, setSchool_data] = useState("");
   const [initial_home, setInitial_home] = useState();
   const [alert, alertSet] = useState(false);
