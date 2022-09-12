@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { StatusBar, Alert } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import messaging from '@react-native-firebase/messaging';
+import PushNotification from "react-native-push-notification";
 import "react-native-gesture-handler";
 
 // Scripts Modules Import
@@ -15,20 +15,15 @@ import Setsc from "./pages/pages/start_school";
 import SetCom from "./pages/pages/school_set_complete";
 import Meal from "./pages/pages/meal";
 import Meal_more from "./pages/pages/meal_more";
-
+import Setclass from "./pages/pages/set_class";
 
 // Config
 const Stack = createStackNavigator();
 
 
 function App() {
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
 
-    return unsubscribe;
-  }, []);
+
   const [school_data, setSchool_data] = useState("");
   const [initial_home, setInitial_home] = useState();
   const [alert, alertSet] = useState(false);
@@ -109,6 +104,11 @@ function App() {
             name="Meal_more"
             component={Meal_more}
             options={{ title: "급식 정보" }}
+          />
+          <Stack.Screen
+            name="SetClass"
+            component={Setclass}
+            options={{ title: "학년/학급 설정" }}
           />
         </Stack.Navigator>
       ) : null}

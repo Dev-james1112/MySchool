@@ -1,4 +1,4 @@
-package com.today_meal.newarchitecture;
+package com.james1112.myschool.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.today_meal.BuildConfig;
-import com.today_meal.newarchitecture.components.MainComponentsRegistry;
-import com.today_meal.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.james1112.myschool.BuildConfig;
+import com.james1112.myschool.newarchitecture.components.MainComponentsRegistry;
+import com.james1112.myschool.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

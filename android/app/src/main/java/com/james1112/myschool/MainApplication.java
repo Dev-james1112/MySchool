@@ -1,7 +1,8 @@
-package com.today_meal;
+package com.james1112.myschool;
 
 import android.app.Application;
 import android.content.Context;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -9,10 +10,13 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
-import com.today_meal.newarchitecture.MainApplicationReactNativeHost;
+import com.james1112.myschool.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.facebook.react.views.text.ReactFontManager;
+import io.invertase.firebase.auth.RNFirebaseAuthPackage; 
+import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -28,6 +32,9 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          packages.add(new ReactNativeFirebaseAppPackage());
+          packages.add(new RNFirebaseAuthPackage());
+          
           return packages;
         }
 
@@ -77,7 +84,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.today_meal.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.james1112.myschool.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

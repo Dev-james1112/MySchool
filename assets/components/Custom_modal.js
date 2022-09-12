@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         marginTop: 2,
     },
     modal_school_con: {
-        marginTop: 30,
+        marginTop: 10,
     },
     modal_school_name_title: {
         fontSize: 16,

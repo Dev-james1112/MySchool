@@ -82,19 +82,23 @@ function Meal_more() {
             });
     }, [school_REGION_data]);
 
+    /* Push Notification Disable */
+    /*
+                    <View style={styles.toggle_box}>
+                    <Ttoggle
+                        isEnable={isEnable}
+                        onPress={() => {
+                            setIsEnable(!isEnable);
+                        }}
+                        text="매일 아침 알림받기"
+                    ></Ttoggle>
+                    <Text style={styles.line}></Text>
+                </View>
+    */
     return (
         <View style={styles.main}>
             <Text style={styles.title}>{school_NM_data}</Text>
-            <View style={styles.toggle_box}>
-                <Ttoggle
-                    isEnable={isEnable}
-                    onPress={() => {
-                        setIsEnable(!isEnable);
-                    }}
-                    text="매일 아침 알림받기"
-                ></Ttoggle>
-                <Text style={styles.line}></Text>
-            </View>
+
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}

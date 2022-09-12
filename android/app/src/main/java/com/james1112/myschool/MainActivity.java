@@ -1,4 +1,4 @@
-package com.today_meal;
+package com.james1112.myschool;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

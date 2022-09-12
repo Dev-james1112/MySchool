@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StatusBar, Image, StyleSheet } from "react-native";
+import { View, StatusBar, Image, StyleSheet,Vibration } from "react-native";
 import { Ttext, Stext } from "../../assets/components/Text";
 import { Tbutton } from "../../assets/components/Button";
 
@@ -17,7 +17,7 @@ function SetCom({ navigation }) {
                 />
             </View>
             <View style={styles.footer}>
-                <Tbutton call={() => navigation.navigate("Meal")}>
+                <Tbutton call={() => {Vibration.vibrate([0, 50, 50, 50]);navigation.navigate("Meal")}}>
                     시작하기
                 </Tbutton>
             </View>

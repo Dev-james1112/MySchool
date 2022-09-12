@@ -9,9 +9,8 @@ function Meal({ navigation }) {
     const [school_ID_data, setSchool_ID_data] = useState();
     const [school_REGION_data, setSchool_REGION_data] = useState();
     const [school_REGION_NM_data, setSchool_REGION_NM_data] = useState();
-    const [meal_data, setMeal_data] = useState(
-        <Text style={styles.error}>오늘의 급식을 찾을수 없어요</Text>
-    );
+    const [meal_data, setMeal_data] = useState("정보를 찾을 수 없어요.");
+    const [error, setError] = useState(true);
     const today = new Date();
 
     const year = today.getFullYear().toString(); // 년도
@@ -33,22 +32,22 @@ function Meal({ navigation }) {
                     setMeal_data(
                         <Text style={styles.meal_text}>
                             {JSON.stringify(
-                                data['mealServiceDietInfo'][1]['row'][0]['DDISH_NM']
+                                data["mealServiceDietInfo"][1]["row"][0][
+                                    "DDISH_NM"
+                                ]
                             )
-                                .replace(/["']/g, "").replace(/<br\/>/g, "\n").replace(/([\d.$])/g, "").replace(/(\()\)/g, "")}
+                                .replace(/["']/g, "")
+                                .replace(/<br\/>/g, "\n")
+                                .replace(/([\d.$])/g, "")
+                                .replace(/(\()\)/g, "")}
                         </Text>
                     );
+                    setError(false);
                 } else {
-                    setMeal_data(
-
-                    );
+                    setError(true);
                 }
             });
-
-
     }, [school_REGION_data]);
-
-
 
     return (
         <View style={styles.main}>
@@ -75,20 +74,24 @@ function Meal({ navigation }) {
             </View>
             <View style={styles.con}>
                 <View style={styles.con_head}>
-
                     <TouchableOpacity
-
                         onPress={() => navigation.navigate("Meal_more")}
                     >
                         <View style={styles.con_more}>
                             <Text style={styles.con_header_text}>
                                 오늘 급식
                             </Text>
-                            <Image source={more_icon} style={styles.more_icon} />
+                            <Image
+                                source={more_icon}
+                                style={styles.more_icon}
+                            />
                         </View>
-                        <Text style={styles.con_text}>{meal_data}</Text>
+                        <Text
+                            style={error ? styles.error_text : styles.con_text}
+                        >
+                            {meal_data}
+                        </Text>
                     </TouchableOpacity>
-
                 </View>
             </View>
         </View>
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF",
         height: "100%",
         wight: "100%",
-        paddingHorizontal: 24,
+        paddingHorizontal: 25,
         paddingTop: 55,
     },
     header_sub_text: {
@@ -113,13 +116,13 @@ const styles = StyleSheet.create({
         lineHeight: 30,
         color: "#F2F2F2",
     },
-    error: {
-        marginTop: 6,
-        fontSize: 16,
-        fontWeight: "500",
-        color: "#595959",
-        lineHeight: 70,
+
+    error_text: {
+        fontSize: 18,
+        color: "#515151",
         textAlign: "center",
+        lineHeight: 50,
+        paddingVertical: 20,
     },
     change_school: {
         flex: 1,
@@ -148,9 +151,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
 
-
-
-
     con: {
         backgroundColor: "#f3f2f3",
         borderRadius: 20,
@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
         alignItems: "flex-end",
         justifyContent: "space-between",
         flexDirection: "row",
-
     },
     more_icon: {
         height: 25,
@@ -183,9 +182,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#515151",
         lineHeight: 20,
-
-    }
-
+    },
 });
 
 export default Meal;

@@ -5,7 +5,10 @@ async function saveSchool(KEY, toSave) {
 
    await AsyncStorage.setItem(KEY , JSON.stringify(toSave))
 }
+async function removeSchool(KEY) {
 
+    await AsyncStorage.removeItem(KEY)
+ }
 const loadSchool = async (KEY) => {
     const s = await AsyncStorage.getItem(KEY)
 
@@ -17,4 +20,5 @@ const loadSchool = async (KEY) => {
 
 }
 
-export {saveSchool, loadSchool}
+
+export {saveSchool, loadSchool, removeSchool}

@@ -1,5 +1,3 @@
-apply plugin: "com.android.application"
-apply plugin: 'com.google.gms.google-services'
 import com.android.build.OutputFile
 
 /**
@@ -134,11 +132,11 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.today_meal"
+        applicationId 'com.james1112.myschool'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {
@@ -259,7 +257,9 @@ plugins{
     id 'com.google.gms.google-services'
 }
 
+
 dependencies {
+    implementation "com.google.firebase:firebase-auth:{{ android.firebase.auth }}"
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation platform('com.google.firebase:firebase-bom:30.3.0')

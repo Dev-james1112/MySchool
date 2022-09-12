@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image, Text, Linking } from "react-native";
+import { View, StyleSheet, Image, Text, Linking,Vibration } from "react-native";
 
 import { Ttext, Stext } from "../../assets/components/Text";
 import { Tbutton } from "../../assets/components/Button";
 import { Cmodal, Smodal } from "../../assets/components/Custom_modal";
-import content from "../../assets/images/content.png";
+import content from "../../assets/images/school.png";
 
 function Main({ navigation }) {
   const [modal_open, SetModal] = useState(false);
@@ -18,7 +18,7 @@ function Main({ navigation }) {
           start="true"
           text="오늘의 학교 급식을 한눈에 볼 수 있어요."
         />
-        <Image source={content} style={styles.plate} />
+        <Image source={content} style={styles.waving_hand} />
       </View>
       <View style={styles.footer}>
         <Cmodal
@@ -30,6 +30,7 @@ function Main({ navigation }) {
           ok={() => {
             navigation.navigate("Set");
             SetModal(false);
+            Vibration.vibrate([0, 50, 50, 50]);
           }}
         >
           <>
@@ -61,7 +62,7 @@ function Main({ navigation }) {
         </Cmodal>
         <Tbutton
           footer="지금 바로 시작해볼까요?"
-          call={() => SetModal(true)}
+          call={() => {Vibration.vibrate([0, 10 ]);SetModal(true)}}
         >
           시작하기
         </Tbutton>
@@ -83,8 +84,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     bottom: 20,
   },
-  plate: {
-    width: 350,
+  waving_hand: {
+    width: 250,
     height: "100%",
     bottom: "5%",
     resizeMode: "contain",

@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     ScrollView,
     StatusBar,
+    Vibration
 } from "react-native";
 import { Ttext, Stext } from "../../assets/components/Text";
 import Tinput from "../../assets/components/Input";
@@ -23,14 +24,13 @@ function Setsc({ navigation }) {
         saveSchool("@NM", schoolName);
         saveSchool("@REGION", regionCode);
         saveSchool("@REGION_NM", regionName);
-        setModal(true);
+        navigation.navigate("SetClass");
     };
     const delSchoolId = (schoolId, schoolName, regionCode, regionName) => {
         saveSchool("@ID", schoolId);
         saveSchool("@NM", schoolName);
         saveSchool("@REGION", regionCode);
         saveSchool("@REGION_NM", regionName);
-        
     };
     loadSchool("@NM").then((data) => setSchool_data(data));
     var header =
@@ -63,7 +63,7 @@ function Setsc({ navigation }) {
     const setSchool = (text) => {
         const key = "6c8bda44c1d949b88a48a7d0bb3a8205";
         const url = `https://open.neis.go.kr/hub/schoolInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=10&SCHUL_NM=${text}`;
-        if (text== "Delete") {
+        if (text == "Delete") {
             delSchoolId("값없음", "값없음", "값없음", "값없음");
             navigation.navigate("Home");
         }
@@ -87,14 +87,16 @@ function Setsc({ navigation }) {
                         arr.map((i) => (
                             <TouchableOpacity
                                 style={styles.school_box}
-                                onPress={() =>
+                                onPress={() => {
+                                    Vibration.vibrate([0, 5]);
                                     setSchoolId(
                                         i.SD_SCHUL_CODE,
                                         i.SCHUL_NM,
                                         i.ATPT_OFCDC_SC_CODE,
                                         i.ORG_RDNMA
-                                    )
-                                }
+                                    );
+                                    
+                                }}
                                 key={i.COUNT + 1}
                             >
                                 <Text key={i} style={styles.school_main_text}>
@@ -132,8 +134,8 @@ function Setsc({ navigation }) {
     return (
         <View style={styles.main}>
             {header}
-            
-            <Tinput  text="학교 이름" call={setSchool} ></Tinput>
+
+            <Tinput text="학교 이름" call={setSchool}></Tinput>
             <ScrollView style={styles.con}>{datas}</ScrollView>
             <StatusBar
                 animated={false}
@@ -164,7 +166,7 @@ const styles = StyleSheet.create({
         height: "100%",
         wight: "100%",
         paddingHorizontal: 20,
-        paddingTop: 20,
+        paddingTop: 25,
     },
     school_box: {
         padding: 10,
@@ -196,7 +198,6 @@ const styles = StyleSheet.create({
     con: {
         paddingTop: 10,
     },
-
 });
 
 export default Setsc;
