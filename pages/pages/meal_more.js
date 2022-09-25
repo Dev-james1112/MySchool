@@ -4,31 +4,24 @@ import {
     Text,
     StyleSheet,
     ScrollView,
-    Image,
-    TouchableOpacity,
 } from "react-native";
 import { loadSchool } from "../../assets/scripts/AsyncStorage";
-import Ttoggle from "../../assets/components/Toggle";
+import {getTime } from "../../assets/scripts/today";
 
 function Meal_more() {
-    const [isEnable, setIsEnable] = useState(false);
     const [school_NM_data, setSchool_NM_data] = useState();
     const [school_ID_data, setSchool_ID_data] = useState();
     const [school_REGION_data, setSchool_REGION_data] = useState();
     const [meal_data, setMeal_data] = useState("");
-    const today = new Date();
-    const year = today.getFullYear().toString(); // 년도
-    const month = ("0" + (today.getMonth() + 1).toString()).slice(-2); // 월
-    const date = ("0" + today.getDate().toString()).slice(-2); // 날짜
-    const YYYYMMDD = year + month + date;
-    const week = ["일", "월", "화", "수", "목", "금", "토"];
+    
     useEffect(() => {
         loadSchool("@NM").then((data) => setSchool_NM_data(data));
         loadSchool("@ID").then((data) => setSchool_ID_data(data));
         loadSchool("@REGION").then((data) => setSchool_REGION_data(data));
     }, []);
     const key = "6c8bda44c1d949b88a48a7d0bb3a8205";
-    const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=30&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${YYYYMMDD}`;
+    const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=30&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${getTime()}`;
+    const week = ["일", "월", "화", "수", "목", "금", "토"];
     useEffect(() => {
         fetch(url)
             .then((res) => res.json())
@@ -42,7 +35,7 @@ function Meal_more() {
                             >
                                 <Text
                                     style={
-                                        i["MLSV_YMD"] == YYYYMMDD
+                                        i["MLSV_YMD"] == getTime()
                                             ? styles.TodayDate
                                             : styles.date
                                     }
@@ -97,7 +90,7 @@ function Meal_more() {
     */
     return (
         <View style={styles.main}>
-            <Text style={styles.title}>{school_NM_data}</Text>
+            <Text style={styles.title}><Text style={styles.schoolNM_title}>{school_NM_data}</Text> 의 오늘 급식</Text>
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -151,11 +144,19 @@ const styles = StyleSheet.create({
         paddingBottom: "20%",
     },
     title: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: "700",
         marginBottom: 20,
         color: "#000",
         marginTop: 20,
+    },
+    schoolNM_title: {
+        fontSize: 24,
+        fontWeight: "700",
+        marginBottom: 20,
+        color: "#35B992",
+        marginTop: 20,
+
     },
     alarm: {
         fontSize: 16,

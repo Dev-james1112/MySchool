@@ -11,6 +11,7 @@ const Tinput = (props) => {
         selectionColor={props.error==true ? "#FF0000" : "#35B992"}
         keyboardType={props.type ? props.type : "default"}
         value={props.value ? props.value : null}
+        maxLength={props.maxLength ? props.maxLength : null}
       />
       {props.error==true ? <Text style={s.error_undertext}>빈 칸을 입력해주세요.</Text> : <></>}
     </View>

@@ -3,13 +3,15 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ttext } from "../../assets/components/Text";
 import { loadSchool } from "../../assets/scripts/AsyncStorage";
 import more_icon from "../../assets/images/more_ico.png";
+import { getTime } from "../../assets/scripts/today";
+import { getMidSchoolTimeTable } from "../../assets/scripts/timetable";
 
-function Meal({ navigation }) {
+function Home({ navigation }) {
     const [school_NM_data, setSchool_NM_data] = useState();
     const [school_ID_data, setSchool_ID_data] = useState();
     const [school_REGION_data, setSchool_REGION_data] = useState();
     const [school_REGION_NM_data, setSchool_REGION_NM_data] = useState();
-    const [meal_data, setMeal_data] = useState("정보를 찾을 수 없어요.");
+    const [meal_data, setMeal_data] = useState("등록된 정보가 없어요.");
     const [error, setError] = useState(true);
     const today = new Date();
 
@@ -20,12 +22,14 @@ function Meal({ navigation }) {
     loadSchool("@ID").then((data) => setSchool_ID_data(data));
     loadSchool("@REGION").then((data) => setSchool_REGION_data(data));
     loadSchool("@REGION_NM").then((data) => setSchool_REGION_NM_data(data));
-    const YYYYMMDD = year + month + date;
+
     const key = "6c8bda44c1d949b88a48a7d0bb3a8205";
 
-    const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=1&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${YYYYMMDD}&MLSV_TO_YMD=${YYYYMMDD}`;
+    const url1 = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=1&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${getTime()}&MLSV_TO_YMD=${getTime()}`;
+
     useEffect(() => {
-        fetch(url)
+        getMidSchoolTimeTable(school_REGION_data, school_ID_data);
+        fetch(url1)
             .then((res) => res.json())
             .then((data) => {
                 if (data["mealServiceDietInfo"] != undefined) {
@@ -47,6 +51,7 @@ function Meal({ navigation }) {
                     setError(true);
                 }
             });
+        
     }, [school_REGION_data]);
 
     return (
@@ -79,7 +84,29 @@ function Meal({ navigation }) {
                     >
                         <View style={styles.con_more}>
                             <Text style={styles.con_header_text}>
-                                오늘 급식
+                                오늘의 급식
+                            </Text>
+                            <Image
+                                source={more_icon}
+                                style={styles.more_icon}
+                            />
+                        </View>
+                        <Text
+                            style={error ? styles.error_text : styles.con_text}
+                        >
+                            {meal_data}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            <View style={styles.con}>
+                <View style={styles.con_head}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("Meal_more")}
+                    >
+                        <View style={styles.con_more}>
+                            <Text style={styles.con_header_text}>
+                                시간표
                             </Text>
                             <Image
                                 source={more_icon}
@@ -185,4 +212,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Meal;
+export default Home;

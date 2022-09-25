@@ -13,7 +13,7 @@ import { loadSchool, saveSchool } from "./assets/scripts/AsyncStorage";
 import Main from "./pages/pages/Main";
 import Setsc from "./pages/pages/start_school";
 import SetCom from "./pages/pages/school_set_complete";
-import Meal from "./pages/pages/meal";
+import Home from "./pages/pages/Home";
 import Meal_more from "./pages/pages/meal_more";
 import Setclass from "./pages/pages/set_class";
 
@@ -34,7 +34,7 @@ function App() {
     if (school_data == "값없음") {
       setInitial_home("Home");
     } else {
-      setInitial_home("Meal");
+      setInitial_home("Main");
     }
   }, [initial_home, alert, school_data]);
   useEffect(() => {
@@ -96,8 +96,8 @@ function App() {
             options={{ title: "", headerShown: false }}
           />
           <Stack.Screen
-            name="Meal"
-            component={Meal}
+            name="Main"
+            component={Home}
             options={{ headerShown: false }}
           />
           <Stack.Screen

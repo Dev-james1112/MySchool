@@ -17,7 +17,7 @@ function SetCom({ navigation }) {
                 />
             </View>
             <View style={styles.footer}>
-                <Tbutton call={() => {Vibration.vibrate([0, 50, 50, 50]);navigation.navigate("Meal")}}>
+                <Tbutton call={() => {Vibration.vibrate([0, 50, 50, 50]);navigation.navigate("Main")}}>
                     시작하기
                 </Tbutton>
             </View>
