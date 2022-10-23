@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { Ttext } from "../../assets/components/Text";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    ScrollView,
+} from "react-native";
 import { loadSchool } from "../../assets/scripts/AsyncStorage";
 import more_icon from "../../assets/images/more_ico.png";
 import { getTime } from "../../assets/scripts/today";
@@ -13,22 +19,40 @@ function Home({ navigation }) {
     const [school_REGION_NM_data, setSchool_REGION_NM_data] = useState();
     const [meal_data, setMeal_data] = useState("등록된 정보가 없어요.");
     const [error, setError] = useState(true);
-    const today = new Date();
-
-    const year = today.getFullYear().toString(); // 년도
-    const month = ("0" + (today.getMonth() + 1).toString()).slice(-2); // 월
-    const date = ("0" + today.getDate().toString()).slice(-2); // 날짜
+    let timeTableDataTmp = [[""],[""],[""],[""],[""]]
+    const [timeTableDayData, setTimeTableDayData] = useState();
     loadSchool("@NM").then((data) => setSchool_NM_data(data));
     loadSchool("@ID").then((data) => setSchool_ID_data(data));
     loadSchool("@REGION").then((data) => setSchool_REGION_data(data));
     loadSchool("@REGION_NM").then((data) => setSchool_REGION_NM_data(data));
-
+    const [timeTableData, setTimeTableData] = useState(
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+    );
     const key = "6c8bda44c1d949b88a48a7d0bb3a8205";
 
     const url1 = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=1&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${getTime()}&MLSV_TO_YMD=${getTime()}`;
 
     useEffect(() => {
-        getMidSchoolTimeTable(school_REGION_data, school_ID_data);
+        getMidSchoolTimeTable(school_REGION_data, school_ID_data).then((d) =>
+            setTimeTableData(d)
+        );
+
+        timeTableData.map((d) => {
+            d.map((a) => {
+
+                console.log(a, timeTableData.indexOf(d)) 
+                timeTableDataTmp[timeTableData.indexOf(d)]+=a + " "
+                setTimeTableDayData(timeTableDataTmp);
+            });
+        })
+        setTimeTableDayData(timeTableDataTmp);
+        console.log(timeTableDayData);
         fetch(url1)
             .then((res) => res.json())
             .then((data) => {
@@ -51,11 +75,11 @@ function Home({ navigation }) {
                     setError(true);
                 }
             });
-        
+      
     }, [school_REGION_data]);
-
+    
     return (
-        <View style={styles.main}>
+        <ScrollView style={styles.main}>
             <View style={styles.gnb}>
                 <Text style={styles.title}>홈</Text>
                 <TouchableOpacity
@@ -103,25 +127,37 @@ function Home({ navigation }) {
                 <View style={styles.con_head}>
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Meal_more")}
+                        style={styles.MainContent}
                     >
                         <View style={styles.con_more}>
-                            <Text style={styles.con_header_text}>
-                                시간표
-                            </Text>
+                            <Text style={styles.con_header_text}>시간표</Text>
                             <Image
                                 source={more_icon}
                                 style={styles.more_icon}
                             />
                         </View>
-                        <Text
+                        <View
                             style={error ? styles.error_text : styles.con_text}
                         >
-                            {meal_data}
-                        </Text>
+                            <View style={styles.TimeTableDayBox}>
+                                <Text style={styles.TimeTableDay}>월</Text>
+                                <Text style={styles.TimeTableDay}>화</Text>
+                                <Text style={styles.TimeTableDay}>수</Text>
+                                <Text style={styles.TimeTableDay}>목</Text>
+                                <Text style={styles.TimeTableDay}>금</Text>
+                            </View>
+                            <View style={styles.TimeTableBox}>
+                                <Text style={styles.TimeTableData}>{timeTableDayData[0]}</Text>
+                                <Text style={styles.TimeTableData}>{timeTableDayData[1]}</Text>
+                                <Text style={styles.TimeTableData}>{timeTableDayData[2]}</Text>
+                                <Text style={styles.TimeTableData}>{timeTableDayData[3]}</Text>
+                                <Text style={styles.TimeTableData}>{timeTableDayData[4]}</Text>
+                            </View>
+                        </View>
                     </TouchableOpacity>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
@@ -183,6 +219,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 24,
         marginTop: 20,
+        width: "100%",
     },
     con_header_text: {
         fontSize: 20,
@@ -193,6 +230,7 @@ const styles = StyleSheet.create({
     con_head: {
         alignContent: "center",
         justifyContent: "center",
+        width: "100%",
     },
     con_more: {
         alignItems: "flex-end",
@@ -209,6 +247,44 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#515151",
         lineHeight: 20,
+        width: "100%",
+    },
+    TimeTableDayBox: {
+        marginTop: 10,
+        flexDirection: "row",
+        width: "100%",
+        justifyContent: "space-between",
+        alignSelf: "center",
+        paddingBottom: 10,
+        borderBottomColor: "#515151",
+        borderBottomWidth: 1,
+    },
+    TimeTableBox: {
+        marginTop: 10,
+        flexDirection: "row",
+        width: "100%",
+        justifyContent: "space-between",
+        alignSelf: "center",
+        paddingBottom: 10,
+    },
+    TimeTableDay: {
+        width: "20%",
+        fontSize: 16,
+        color: "#515151",
+        justifyContent: "space-between",
+        textAlign: "center",
+    },
+    TimeTableData: {
+        width: "20%",
+        fontSize: 16,
+        color: "#515151",
+        justifyContent: "space-between",
+        textAlign: "center",
+        flexDirection: "row-reverse",
+    },
+    MainContent: {
+        width: "100%",
+        height: "100%",
     },
 });
 
