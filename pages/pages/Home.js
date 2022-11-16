@@ -11,6 +11,7 @@ import { loadSchool } from "../../assets/scripts/AsyncStorage";
 import more_icon from "../../assets/images/more_ico.png";
 import { getTime } from "../../assets/scripts/today";
 import { getMidSchoolTimeTable } from "../../assets/scripts/timetable";
+import { set } from "react-native-reanimated";
 
 function Home({ navigation }) {
     const [school_NM_data, setSchool_NM_data] = useState();
@@ -19,11 +20,11 @@ function Home({ navigation }) {
     const [school_REGION_NM_data, setSchool_REGION_NM_data] = useState();
     const [meal_data, setMeal_data] = useState("등록된 정보가 없어요.");
     const [error, setError] = useState(true);
-    let timeTableDataTmp = [[""],[""],[""],[""],[""]]
-    const [timeTableDayData, setTimeTableDayData] = useState();
+    let timeTableDataTmp =[ [""],[""],[""],[""],[""]];
+    const [timeTableDayData, setTimeTableDayData] = useState([[""],[""],[""],[""],[""]]);
     loadSchool("@NM").then((data) => setSchool_NM_data(data));
     loadSchool("@ID").then((data) => setSchool_ID_data(data));
-    loadSchool("@REGION").then((data) => setSchool_REGION_data(data));
+    loadSchool("@REGION").then((data) => setSchool_REGION_data(data));  
     loadSchool("@REGION_NM").then((data) => setSchool_REGION_NM_data(data));
     const [timeTableData, setTimeTableData] = useState(
         [],
@@ -39,20 +40,36 @@ function Home({ navigation }) {
     const url1 = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=1&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${getTime()}&MLSV_TO_YMD=${getTime()}`;
 
     useEffect(() => {
-        getMidSchoolTimeTable(school_REGION_data, school_ID_data).then((d) =>
+        getMidSchoolTimeTable(school_REGION_data, school_ID_data).then((d) =>{
             setTimeTableData(d)
+            timeTableDataTmp = [ [""],[""],[""],[""],[""]];}
+
         );
-
-        timeTableData.map((d) => {
-            d.map((a) => {
-
-                console.log(a, timeTableData.indexOf(d)) 
-                timeTableDataTmp[timeTableData.indexOf(d)]+=a + " "
-                setTimeTableDayData(timeTableDataTmp);
-            });
-        })
+        
+        //console.log(timeTableData);
+        timeTableDataTmp =[ [""],[""],[""],[""],[""]];
         setTimeTableDayData(timeTableDataTmp);
+        timeTableData.map((d) => {
+            //console.log(d);
+            timeTableDataTmp[timeTableData.indexOf(d)] = ""
+            d.map((a) => {
+                if(a != undefined){
+               console.log(a, timeTableData.indexOf(d));
+
+                timeTableDataTmp[timeTableData.indexOf(d)].push(<View key={timeTableData.indexOf(d)} style={styles.TimeTableTextBox}><Text>{a + " "}</Text></View>);
+                setTimeTableDayData(timeTableDataTmp);
+                  
+                }
+                
+            });
+            timeTableDataTmp[timeTableData.indexOf(d)] = ""
+        });
+        
+  
+        timeTableDataTmp = [ [""],[""],[""],[""],[""]];
         console.log(timeTableDayData);
+
+        //console.log( timeTableDayData);
         fetch(url1)
             .then((res) => res.json())
             .then((data) => {
@@ -75,9 +92,8 @@ function Home({ navigation }) {
                     setError(true);
                 }
             });
-      
     }, [school_REGION_data]);
-    
+
     return (
         <ScrollView style={styles.main}>
             <View style={styles.gnb}>
@@ -147,7 +163,7 @@ function Home({ navigation }) {
                                 <Text style={styles.TimeTableDay}>금</Text>
                             </View>
                             <View style={styles.TimeTableBox}>
-                                <Text style={styles.TimeTableData}>{timeTableDayData[0]}</Text>
+                            <Text style={styles.TimeTableData}>{timeTableDayData[0]}</Text>
                                 <Text style={styles.TimeTableData}>{timeTableDayData[1]}</Text>
                                 <Text style={styles.TimeTableData}>{timeTableDayData[2]}</Text>
                                 <Text style={styles.TimeTableData}>{timeTableDayData[3]}</Text>
@@ -220,12 +236,14 @@ const styles = StyleSheet.create({
         padding: 24,
         marginTop: 20,
         width: "100%",
+
     },
     con_header_text: {
         fontSize: 20,
         fontWeight: "bold",
         color: "#000",
         alignSelf: "center",
+        flex:1
     },
     con_head: {
         alignContent: "center",
@@ -266,6 +284,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignSelf: "center",
         paddingBottom: 10,
+        
     },
     TimeTableDay: {
         width: "20%",
@@ -285,6 +304,13 @@ const styles = StyleSheet.create({
     MainContent: {
         width: "100%",
         height: "100%",
+    },
+    TimeTableTextBox: {
+        width: "100%",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: 50,
     },
 });
 
