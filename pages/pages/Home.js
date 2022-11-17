@@ -287,7 +287,6 @@ const styles = StyleSheet.create({
 
         borderColor: "#f2f2f2",
         borderWidth: 1,
-
     },
     con_header_text: {
         fontSize: 20,
@@ -326,7 +325,6 @@ const styles = StyleSheet.create({
         alignSelf: "center",
 
         paddingBottom: 2,
-
     },
     TimeTableBox: {
         marginTop: 10,
@@ -335,7 +333,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignSelf: "center",
         paddingBottom: 10,
-
     },
     TimeTableDay: {
         width: "20%",
