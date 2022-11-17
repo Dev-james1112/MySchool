@@ -11,7 +11,7 @@ import { loadSchool } from "../../assets/scripts/AsyncStorage";
 import more_icon from "../../assets/images/more_ico.png";
 import { getTime } from "../../assets/scripts/today";
 import { getMidSchoolTimeTable } from "../../assets/scripts/timetable";
-import { set } from "react-native-reanimated";
+import { interpolate } from "react-native-reanimated";
 
 function Home({ navigation }) {
     const [school_NM_data, setSchool_NM_data] = useState();
@@ -20,11 +20,10 @@ function Home({ navigation }) {
     const [school_REGION_NM_data, setSchool_REGION_NM_data] = useState();
     const [meal_data, setMeal_data] = useState("등록된 정보가 없어요.");
     const [error, setError] = useState(true);
-    let timeTableDataTmp =[ [""],[""],[""],[""],[""]];
-    const [timeTableDayData, setTimeTableDayData] = useState([[""],[""],[""],[""],[""]]);
+    let keyCount = 0;
     loadSchool("@NM").then((data) => setSchool_NM_data(data));
     loadSchool("@ID").then((data) => setSchool_ID_data(data));
-    loadSchool("@REGION").then((data) => setSchool_REGION_data(data));  
+    loadSchool("@REGION").then((data) => setSchool_REGION_data(data));
     loadSchool("@REGION_NM").then((data) => setSchool_REGION_NM_data(data));
     const [timeTableData, setTimeTableData] = useState(
         [],
@@ -35,41 +34,50 @@ function Home({ navigation }) {
         [],
         []
     );
+    let timeTableComponent = [[], [], [], [], []];
     const key = "6c8bda44c1d949b88a48a7d0bb3a8205";
 
     const url1 = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=1&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${getTime()}&MLSV_TO_YMD=${getTime()}`;
 
     useEffect(() => {
-        getMidSchoolTimeTable(school_REGION_data, school_ID_data).then((d) =>{
-            setTimeTableData(d)
-            timeTableDataTmp = [ [""],[""],[""],[""],[""]];}
-
-        );
-        
         //console.log(timeTableData);
-        timeTableDataTmp =[ [""],[""],[""],[""],[""]];
+        /*
         setTimeTableDayData(timeTableDataTmp);
         timeTableData.map((d) => {
             //console.log(d);
-            timeTableDataTmp[timeTableData.indexOf(d)] = ""
+            timeTableDataTmp[timeTableData.indexOf(d)] = "";
             d.map((a) => {
-                if(a != undefined){
-               console.log(a, timeTableData.indexOf(d));
+                if (a != undefined) {
+                    console.log(a, timeTableData.indexOf(d));
 
-                timeTableDataTmp[timeTableData.indexOf(d)].push(<View key={timeTableData.indexOf(d)} style={styles.TimeTableTextBox}><Text>{a + " "}</Text></View>);
-                setTimeTableDayData(timeTableDataTmp);
-                  
+                    timeTableDataTmp[timeTableData.indexOf(d)].push(
+                        <View
+                            key={timeTableData.indexOf(d)}
+                            style={styles.TimeTableTextBox}
+                        >
+                            <Text>{a + " "}</Text>
+                        </View>
+                    );
+                    setTimeTableDayData(timeTableDataTmp);
                 }
-                
             });
-            timeTableDataTmp[timeTableData.indexOf(d)] = ""
+            timeTableDataTmp[timeTableData.indexOf(d)] = "";
         });
-        
-  
-        timeTableDataTmp = [ [""],[""],[""],[""],[""]];
-        console.log(timeTableDayData);
 
+        timeTableDataTmp = [[""], [""], [""], [""], [""]];
+        console.log(timeTableDayData);
+        */
         //console.log( timeTableDayData);
+        async function getTimeTable() {
+            await getMidSchoolTimeTable(
+                school_REGION_data,
+                school_ID_data
+            ).then((d) => {
+                setTimeTableData(d);
+            });
+        }
+        getTimeTable();
+
         fetch(url1)
             .then((res) => res.json())
             .then((data) => {
@@ -92,9 +100,27 @@ function Home({ navigation }) {
                     setError(true);
                 }
             });
-    }, [school_REGION_data]);
-
+    }, [school_REGION_data, school_ID_data]);
+    timeTableData.map((d) => {
+        d.map((a) => {
+            try {
+                timeTableComponent[timeTableData.indexOf(d)].push(
+                    <View key={keyCount+1000} style={styles.TimeTableTextView}>
+                        <View key={keyCount} style={styles.TimeTableTextBox}>
+                            <Text style={styles.TimeTableText}>{a}</Text>
+                        </View>
+                        
+                    </View>
+                );
+                keyCount += 1;
+            } catch {
+                console.log(" ");
+            }
+        });
+    });
+    //console.log(timeTableComponent[0]);
     return (
+        <View style={styles.screen}>
         <ScrollView style={styles.main}>
             <View style={styles.gnb}>
                 <Text style={styles.title}>홈</Text>
@@ -131,11 +157,7 @@ function Home({ navigation }) {
                                 style={styles.more_icon}
                             />
                         </View>
-                        <Text
-                            style={error ? styles.error_text : styles.con_text}
-                        >
-                            {meal_data}
-                        </Text>
+                        <Text style={styles.con_text}>{meal_data}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -163,27 +185,45 @@ function Home({ navigation }) {
                                 <Text style={styles.TimeTableDay}>금</Text>
                             </View>
                             <View style={styles.TimeTableBox}>
-                            <Text style={styles.TimeTableData}>{timeTableDayData[0]}</Text>
-                                <Text style={styles.TimeTableData}>{timeTableDayData[1]}</Text>
-                                <Text style={styles.TimeTableData}>{timeTableDayData[2]}</Text>
-                                <Text style={styles.TimeTableData}>{timeTableDayData[3]}</Text>
-                                <Text style={styles.TimeTableData}>{timeTableDayData[4]}</Text>
+                                <Text style={styles.TimeTableData}>
+                                    {timeTableComponent[0]}
+                                </Text>
+                                <Text style={styles.TimeTableData}>
+                                    {timeTableComponent[1]}
+                                </Text>
+                                <Text style={styles.TimeTableData}>
+                                    {timeTableComponent[2]}
+                                </Text>
+                                <Text style={styles.TimeTableData}>
+                                    {timeTableComponent[3]}
+                                </Text>
+                                <Text style={[styles.TimeTableData, styles.TimeTableDataLast]}>
+                                    {timeTableComponent[4]}
+                                </Text>
                             </View>
                         </View>
                     </TouchableOpacity>
+                    
                 </View>
+                
+            </View>
+            <View style={styles.ScreenBlank}>
+
             </View>
         </ScrollView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+
     main: {
         backgroundColor: "#FFF",
-        height: "100%",
+
         wight: "100%",
         paddingHorizontal: 25,
-        paddingTop: 55,
+        
+        paddingBottom: 50
     },
     header_sub_text: {
         fontSize: 12,
@@ -195,7 +235,9 @@ const styles = StyleSheet.create({
         lineHeight: 30,
         color: "#F2F2F2",
     },
-
+    ScreenBlank: {
+        height: 100
+    },
     error_text: {
         fontSize: 18,
         color: "#515151",
@@ -215,12 +257,13 @@ const styles = StyleSheet.create({
         color: "#808080",
     },
     gnb: {
+        paddingTop: 55,
         display: "flex",
         flexDirection: "row",
     },
     school_con: {
         backgroundColor: "#35B992",
-        borderRadius: 20,
+        borderRadius: 15,
         padding: 24,
         paddingTop: 22,
         marginTop: 20,
@@ -231,19 +274,20 @@ const styles = StyleSheet.create({
     },
 
     con: {
-        backgroundColor: "#f3f2f3",
-        borderRadius: 20,
+        backgroundColor: "#fff",
+        borderRadius: 15,
         padding: 24,
         marginTop: 20,
         width: "100%",
-
+        borderColor: "#f2f2f2",
+        borderWidth: 1
     },
     con_header_text: {
         fontSize: 20,
         fontWeight: "bold",
         color: "#000",
         alignSelf: "center",
-        flex:1
+        flex: 1,
     },
     con_head: {
         alignContent: "center",
@@ -273,9 +317,8 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "space-between",
         alignSelf: "center",
-        paddingBottom: 10,
-        borderBottomColor: "#515151",
-        borderBottomWidth: 1,
+        paddingBottom: 2,
+
     },
     TimeTableBox: {
         marginTop: 10,
@@ -284,11 +327,11 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignSelf: "center",
         paddingBottom: 10,
-        
+
     },
     TimeTableDay: {
         width: "20%",
-        fontSize: 16,
+        fontSize: 12,
         color: "#515151",
         justifyContent: "space-between",
         textAlign: "center",
@@ -300,18 +343,47 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         textAlign: "center",
         flexDirection: "row-reverse",
+        flexWrap: "wrap",
+        
+        borderBottomColor: "#D9D9D9",
+        borderBottomWidth: 1,
+        borderTopColor: "#D9D9D9",
+        borderTopWidth: 1,
+        borderLeftColor: "#D9D9D9",
+        borderLeftWidth: 1,
     },
     MainContent: {
         width: "100%",
-        height: "100%",
+
     },
     TimeTableTextBox: {
-        width: "100%",
-        height: "100%",
-        justifyContent: "center",
+        width: "10%",
+        height: 70,
+
         alignItems: "center",
-        marginHorizontal: 50,
+        flex: 1,
+        borderRadius: 6,
+        overflow: "hidden",
+        display: "flex",
+        paddingTop: 25
     },
+    TimeTableText: {
+        flexWrap: "wrap",
+        flex: 1,
+        width: 60,
+        textAlign: "center",
+        fontSize: 10,
+        
+    },
+    
+    TimeTableTextView: {
+        borderBottomColor: "#D9D9D9",
+        borderBottomWidth: 1
+    },
+    TimeTableDataLast: {
+        borderRightWidth: 1,
+        borderRightColor: "#D9D9D9",
+    }
 });
 
 export default Home;
