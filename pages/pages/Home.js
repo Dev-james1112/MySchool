@@ -92,88 +92,127 @@ function Home({ navigation }) {
                     setError(true);
                 }
             });
-    }, [school_REGION_data]);
-
+    }, [school_REGION_data, school_ID_data]);
+    timeTableData.map((d) => {
+        d.map((a) => {
+            try {
+                timeTableComponent[timeTableData.indexOf(d)].push(
+                    <View
+                        key={keyCount + 1000}
+                        style={styles.TimeTableTextView}
+                    >
+                        <View key={keyCount} style={styles.TimeTableTextBox}>
+                            <Text style={styles.TimeTableText}>{a}</Text>
+                        </View>
+                    </View>
+                );
+                keyCount += 1;
+            } catch {
+                console.log(" ");
+            }
+        });
+    });
+    //console.log(timeTableComponent[0]);
     return (
-        <ScrollView style={styles.main}>
-            <View style={styles.gnb}>
-                <Text style={styles.title}>홈</Text>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("Set")}
-                    style={styles.change_school}
-                >
-                    <Text style={styles.change_school_text}>학교 바꾸기</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.school_con}>
-                <View style={styles.head}>
-                    <Text>
-                        <Text style={styles.header_school_text}>
-                            {school_NM_data}
-                        </Text>
-                    </Text>
-                    <Text style={styles.header_sub_text}>
-                        {school_REGION_NM_data}
-                    </Text>
-                </View>
-            </View>
-            <View style={styles.con}>
-                <View style={styles.con_head}>
+        <View style={styles.screen}>
+            <ScrollView style={styles.main}>
+                <View style={styles.gnb}>
+                    <Text style={styles.title}>홈</Text>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate("Meal_more")}
+                        onPress={() => navigation.navigate("Set")}
+                        style={styles.change_school}
                     >
-                        <View style={styles.con_more}>
-                            <Text style={styles.con_header_text}>
-                                오늘의 급식
+                        <Text style={styles.change_school_text}>
+                            학교 바꾸기
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.school_con}>
+                    <View style={styles.head}>
+                        <Text>
+                            <Text style={styles.header_school_text}>
+                                {school_NM_data}
                             </Text>
-                            <Image
-                                source={more_icon}
-                                style={styles.more_icon}
-                            />
-                        </View>
-                        <Text
-                            style={error ? styles.error_text : styles.con_text}
-                        >
-                            {meal_data}
                         </Text>
-                    </TouchableOpacity>
+                        <Text style={styles.header_sub_text}>
+                            {school_REGION_NM_data}
+                        </Text>
+                    </View>
                 </View>
-            </View>
-            <View style={styles.con}>
-                <View style={styles.con_head}>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("Meal_more")}
-                        style={styles.MainContent}
-                    >
-                        <View style={styles.con_more}>
-                            <Text style={styles.con_header_text}>시간표</Text>
-                            <Image
-                                source={more_icon}
-                                style={styles.more_icon}
-                            />
-                        </View>
-                        <View
-                            style={error ? styles.error_text : styles.con_text}
+                <View style={styles.con}>
+                    <View style={styles.con_head}>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate("Meal_more")}
                         >
-                            <View style={styles.TimeTableDayBox}>
-                                <Text style={styles.TimeTableDay}>월</Text>
-                                <Text style={styles.TimeTableDay}>화</Text>
-                                <Text style={styles.TimeTableDay}>수</Text>
-                                <Text style={styles.TimeTableDay}>목</Text>
-                                <Text style={styles.TimeTableDay}>금</Text>
+                            <View style={styles.con_more}>
+                                <Text style={styles.con_header_text}>
+                                    오늘의 급식
+                                </Text>
+                                <Image
+                                    source={more_icon}
+                                    style={styles.more_icon}
+                                />
                             </View>
-                            <View style={styles.TimeTableBox}>
-                            <Text style={styles.TimeTableData}>{timeTableDayData[0]}</Text>
-                                <Text style={styles.TimeTableData}>{timeTableDayData[1]}</Text>
-                                <Text style={styles.TimeTableData}>{timeTableDayData[2]}</Text>
-                                <Text style={styles.TimeTableData}>{timeTableDayData[3]}</Text>
-                                <Text style={styles.TimeTableData}>{timeTableDayData[4]}</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                            <Text style={styles.con_text}>{meal_data}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-        </ScrollView>
+                <View style={styles.con}>
+                    <View style={styles.con_head}>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate("Meal_more")}
+                            style={styles.MainContent}
+                        >
+                            <View style={styles.con_more}>
+                                <Text style={styles.con_header_text}>
+                                    시간표
+                                </Text>
+                                <Image
+                                    source={more_icon}
+                                    style={styles.more_icon}
+                                />
+                            </View>
+                            <View
+                                style={
+                                    error ? styles.error_text : styles.con_text
+                                }
+                            >
+                                <View style={styles.TimeTableDayBox}>
+                                    <Text style={styles.TimeTableDay}>월</Text>
+                                    <Text style={styles.TimeTableDay}>화</Text>
+                                    <Text style={styles.TimeTableDay}>수</Text>
+                                    <Text style={styles.TimeTableDay}>목</Text>
+                                    <Text style={styles.TimeTableDay}>금</Text>
+                                </View>
+                                <View style={styles.TimeTableBox}>
+                                    <Text style={styles.TimeTableData}>
+                                        {timeTableComponent[0]}
+                                    </Text>
+                                    <Text style={styles.TimeTableData}>
+                                        {timeTableComponent[1]}
+                                    </Text>
+                                    <Text style={styles.TimeTableData}>
+                                        {timeTableComponent[2]}
+                                    </Text>
+                                    <Text style={styles.TimeTableData}>
+                                        {timeTableComponent[3]}
+                                    </Text>
+                                    <Text
+                                        style={[
+                                            styles.TimeTableData,
+                                            styles.TimeTableDataLast,
+                                        ]}
+                                    >
+                                        {timeTableComponent[4]}
+                                    </Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.ScreenBlank}></View>
+            </ScrollView>
+        </View>
     );
 }
 
@@ -183,7 +222,10 @@ const styles = StyleSheet.create({
         height: "100%",
         wight: "100%",
         paddingHorizontal: 25,
-        paddingTop: 55,
+
+
+        paddingBottom: 50,
+
     },
     header_sub_text: {
         fontSize: 12,
@@ -194,6 +236,12 @@ const styles = StyleSheet.create({
         fontSize: 22,
         lineHeight: 30,
         color: "#F2F2F2",
+    },
+
+
+
+    ScreenBlank: {
+        height: 100,
     },
 
     error_text: {
@@ -237,6 +285,9 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: "100%",
 
+        borderColor: "#f2f2f2",
+        borderWidth: 1,
+
     },
     con_header_text: {
         fontSize: 20,
@@ -273,9 +324,9 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "space-between",
         alignSelf: "center",
-        paddingBottom: 10,
-        borderBottomColor: "#515151",
-        borderBottomWidth: 1,
+
+        paddingBottom: 2,
+
     },
     TimeTableBox: {
         marginTop: 10,
@@ -284,7 +335,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignSelf: "center",
         paddingBottom: 10,
-        
+
     },
     TimeTableDay: {
         width: "20%",
@@ -300,17 +351,46 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         textAlign: "center",
         flexDirection: "row-reverse",
+
+        flexWrap: "wrap",
+
+        borderBottomColor: "#D9D9D9",
+        borderBottomWidth: 1,
+        borderTopColor: "#D9D9D9",
+        borderTopWidth: 1,
+        borderLeftColor: "#D9D9D9",
+        borderLeftWidth: 1,
     },
     MainContent: {
         width: "100%",
-        height: "100%",
     },
     TimeTableTextBox: {
         width: "100%",
         height: "100%",
         justifyContent: "center",
         alignItems: "center",
-        marginHorizontal: 50,
+
+        flex: 1,
+        borderRadius: 6,
+        overflow: "hidden",
+        display: "flex",
+        paddingTop: 25,
+    },
+    TimeTableText: {
+        flexWrap: "wrap",
+        flex: 1,
+        width: 60,
+        textAlign: "center",
+        fontSize: 10,
+    },
+
+    TimeTableTextView: {
+        borderBottomColor: "#D9D9D9",
+        borderBottomWidth: 1,
+    },
+    TimeTableDataLast: {
+        borderRightWidth: 1,
+        borderRightColor: "#D9D9D9",
     },
 });
 
