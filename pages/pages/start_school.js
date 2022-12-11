@@ -12,25 +12,27 @@ import { Ttext, Stext } from "../../assets/components/Text";
 import Tinput from "../../assets/components/Input";
 import { saveSchool, loadSchool } from "../../assets/scripts/AsyncStorage";
 import { Tmodal } from "../../assets/components/Modal";
+import { useFonts } from "expo-font";
 
 function Setsc({ navigation }) {
     // Get school list
-
     const [modal_open, setModal] = useState(false);
     const [datas, setData] = useState("");
     const [school_name, setSchool_data] = useState("");
-    const setSchoolId = (schoolId, schoolName, regionCode, regionName) => {
+    const setSchoolId = (schoolId, schoolName, regionCode, regionName, schoolKnd) => {
         saveSchool("@ID", schoolId);
         saveSchool("@NM", schoolName);
         saveSchool("@REGION", regionCode);
         saveSchool("@REGION_NM", regionName);
+        saveSchool("@KND", schoolKnd)
         navigation.navigate("SetClass");
     };
-    const delSchoolId = (schoolId, schoolName, regionCode, regionName) => {
+    const delSchoolId = (schoolId, schoolName, regionCode, regionName,schoolKnd) => {
         saveSchool("@ID", schoolId);
         saveSchool("@NM", schoolName);
         saveSchool("@REGION", regionCode);
         saveSchool("@REGION_NM", regionName);
+        saveSchool("@KND", schoolKnd)
     };
     loadSchool("@NM").then((data) => setSchool_data(data));
     var header =
@@ -64,7 +66,7 @@ function Setsc({ navigation }) {
         const key = "6c8bda44c1d949b88a48a7d0bb3a8205";
         const url = `https://open.neis.go.kr/hub/schoolInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=10&SCHUL_NM=${text}`;
         if (text == "Delete") {
-            delSchoolId("값없음", "값없음", "값없음", "값없음");
+            delSchoolId("값없음", "값없음", "값없음", "값없음", "값없음");
             navigation.navigate("Home");
         }
         fetch(url)
@@ -81,6 +83,7 @@ function Setsc({ navigation }) {
                             ORG_RDNMA: i.ORG_RDNMA,
                             COUNT: count,
                             ATPT_OFCDC_SC_CODE: i.ATPT_OFCDC_SC_CODE,
+                            SCHUL_KND_SC_NM: i.SCHUL_KND_SC_NM,
                         };
                     }
                     setData(
@@ -93,7 +96,8 @@ function Setsc({ navigation }) {
                                         i.SD_SCHUL_CODE,
                                         i.SCHUL_NM,
                                         i.ATPT_OFCDC_SC_CODE,
-                                        i.ORG_RDNMA
+                                        i.ORG_RDNMA,
+                                        i.SCHUL_KND_SC_NM
                                     );
                                     
                                 }}
@@ -130,12 +134,22 @@ function Setsc({ navigation }) {
                 }
             });
     };
-
+    const [loaded] = useFonts({
+        NotoSansBlack: require('../../assets/fonts/NotoSansKRBlack.otf'),
+        NotoSansBold: require('../../assets/fonts/NotoSansKRBold.otf'),
+        NotoSansLight: require('../../assets/fonts/NotoSansKRLight.otf'),
+        NotoSansMedium: require('../../assets/fonts/NotoSansKRMedium.otf'),
+        NotoSansRegular: require('../../assets/fonts/NotoSansKRRegular.otf'),
+        NotoSansThin: require('../../assets/fonts/NotoSansKRThin.otf'),
+    });
+    if (!loaded) {
+        return null;
+    }
     return (
         <View style={styles.main}>
             {header}
 
-            <Tinput text="학교 이름" call={setSchool}></Tinput>
+            <Tinput text="학교 이름" call={setSchool} placeholder="학교 이름"></Tinput>
             <ScrollView style={styles.con}>{datas}</ScrollView>
             <StatusBar
                 animated={false}
@@ -180,12 +194,14 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         color: "#000",
         lineHeight: 20,
+        fontFamily: "NotoSansMedium",
     },
     school_sub_text: {
-        fontSize: 12,
+        fontSize: 11,
         fontWeight: "400",
         color: "#595959",
         lineHeight: 16,
+        fontFamily: "NotoSansRegular",
     },
     header_text: {
         fontSize: 16,

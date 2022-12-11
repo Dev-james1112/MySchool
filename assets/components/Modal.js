@@ -1,9 +1,21 @@
 import React, { useState } from "react";
 import { Text, StyleSheet, TouchableOpacity, Modal, View } from "react-native";
 import { Tbutton, Sbutton } from "./Button";
+import { useFonts } from "expo-font";
 
 
 const Tmodal = (props) => {
+    const [loaded] = useFonts({
+        NotoSansBlack: require("../../assets/fonts/NotoSansKRBlack.otf"),
+        NotoSansBold: require("../../assets/fonts/NotoSansKRBold.otf"),
+        NotoSansLight: require("../../assets/fonts/NotoSansKRLight.otf"),
+        NotoSansMedium: require("../../assets/fonts/NotoSansKRMedium.otf"),
+        NotoSansRegular: require("../../assets/fonts/NotoSansKRRegular.otf"),
+        NotoSansThin: require("../../assets/fonts/NotoSansKRThin.otf"),
+    });
+    if (!loaded) {
+        return null;
+    }
     return (
         <Modal
             animationType="none"
@@ -65,17 +77,18 @@ const styles = StyleSheet.create({
     modal_title: {
         fontSize: 24,
         color: "#000",
-        fontWeight: "bold",
+        fontFamily: "NotoSansBold",
     },
     modal_sub_title: {
         fontSize: 16,
         color: "#595959",
         marginTop: 4,
+        fontFamily: "NotoSansBold",
     },
     modal_school_name: {
         fontSize: 22,
-        color: "#000",
-        fontWeight: "bold",
+        color: "#111",
+        fontFamily: "NotoSansBold", 
         marginTop: 2,
     },
     modal_school_con: {

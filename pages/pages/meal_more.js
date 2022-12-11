@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-    View,
-    Text,
-    StyleSheet,
-    ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { loadSchool } from "../../assets/scripts/AsyncStorage";
-import {getTime } from "../../assets/scripts/today";
+import { getTime } from "../../assets/scripts/today";
+import { useFonts } from "expo-font";
 
 function Meal_more() {
     const [school_NM_data, setSchool_NM_data] = useState();
     const [school_ID_data, setSchool_ID_data] = useState();
     const [school_REGION_data, setSchool_REGION_data] = useState();
     const [meal_data, setMeal_data] = useState("");
-    
+
     useEffect(() => {
         loadSchool("@NM").then((data) => setSchool_NM_data(data));
         loadSchool("@ID").then((data) => setSchool_ID_data(data));
@@ -33,30 +29,46 @@ function Meal_more() {
                                 style={styles.meal_box}
                                 key={i["MLSV_TO_YMD"]}
                             >
-                                <Text
-                                    style={
-                                        i["MLSV_YMD"] == getTime()
-                                            ? styles.TodayDate
-                                            : styles.date
-                                    }
-                                    key={i["MLSV_FROM_YMD"]}
-                                >
-                                    {i.MLSV_FROM_YMD.slice(4, 6).replace(0, "")}
-                                    월 {i.MLSV_FROM_YMD.slice(6).replace(0, "")}
-                                    일{" "}
-                                    {
-                                        week[
-                                            new Date(
-                                                i.MLSV_YMD.slice(0, 4) +
-                                                    "-" +
-                                                    i.MLSV_YMD.slice(4, 6) +
-                                                    "-" +
-                                                    i.MLSV_YMD.slice(6, 8)
-                                            ).getDay()
-                                        ]
-                                    }
-                                    요일
-                                </Text>
+                                <View style={styles.meal_date}>
+                                    <Text
+                                        style={
+                                            i["MLSV_YMD"] == getTime()
+                                                ? styles.TodayDate
+                                                : styles.date
+                                        }
+                                        key={i["MLSV_FROM_YMD"]}
+                                    >
+                                        {i.MLSV_FROM_YMD.slice(4, 6).replace(
+                                            0,
+                                            ""
+                                        )}
+                                        월{" "}
+                                        {i.MLSV_FROM_YMD.slice(6).replace(
+                                            0,
+                                            ""
+                                        )}
+                                        일{" "}
+                                        {
+                                            week[
+                                                new Date(
+                                                    i.MLSV_YMD.slice(0, 4) +
+                                                        "-" +
+                                                        i.MLSV_YMD.slice(4, 6) +
+                                                        "-" +
+                                                        i.MLSV_YMD.slice(6, 8)
+                                                ).getDay()
+                                            ]
+                                        }
+                                        요일
+                                    </Text>
+                                    {i["MLSV_YMD"] == getTime() ? (
+                                        <View style={styles.TodayTextBox}>
+                                            <Text style={styles.TodayText}>
+                                                오늘
+                                            </Text>
+                                        </View>
+                                    ) : null}
+                                </View>
                                 <Text
                                     style={styles.meal}
                                     key={i["DDISH_NM"]["MLSV_YMD"]}
@@ -88,9 +100,23 @@ function Meal_more() {
                     <Text style={styles.line}></Text>
                 </View>
     */
+    const [loaded] = useFonts({
+        NotoSansBlack: require("../../assets/fonts/NotoSansKRBlack.otf"),
+        NotoSansBold: require("../../assets/fonts/NotoSansKRBold.otf"),
+        NotoSansLight: require("../../assets/fonts/NotoSansKRLight.otf"),
+        NotoSansMedium: require("../../assets/fonts/NotoSansKRMedium.otf"),
+        NotoSansRegular: require("../../assets/fonts/NotoSansKRRegular.otf"),
+        NotoSansThin: require("../../assets/fonts/NotoSansKRThin.otf"),
+    });
+    if (!loaded) {
+        return null;
+    }
     return (
         <View style={styles.main}>
-            <Text style={styles.title}><Text style={styles.schoolNM_title}>{school_NM_data}</Text> 의 오늘 급식</Text>
+            <Text style={styles.title}>
+                <Text style={styles.schoolNM_title}>{school_NM_data}</Text> 의
+                오늘 급식
+            </Text>
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -111,17 +137,17 @@ const styles = StyleSheet.create({
     },
     date: {
         fontSize: 18,
-        fontWeight: "600",
-        lineHeight: 30,
+        fontFamily: "NotoSansBold",
+        lineHeight: 20,
         marginBottom: 8,
         color: "#000",
     },
     TodayDate: {
         fontSize: 18,
-        fontWeight: "600",
-        lineHeight: 30,
+        fontFamily: "NotoSansBold",
+        lineHeight: 21,
         marginBottom: 8,
-        color: "#0455BF",
+        marginTop:1,
     },
     meal: {
         fontSize: 16,
@@ -156,7 +182,6 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         color: "#35B992",
         marginTop: 20,
-
     },
     alarm: {
         fontSize: 16,
@@ -171,6 +196,34 @@ const styles = StyleSheet.create({
     line: {
         borderBottomColor: "#ddd",
         borderBottomWidth: StyleSheet.hairlineWidth,
+    },
+    TodayTextBox: {
+        float: "right",
+        flex: 1,
+        backgroundColor: "#35B992",
+        padding: 3,
+        borderRadius: 5,
+        alignContent: "center",
+        justifyContent: "center",
+        alignItems: "center",
+        margin: 0,
+
+
+        marginLeft: 8,
+        height: 23,
+    },
+    TodayText: {
+        fontFamily: "NotoSansBold",
+        lineHeight: 15,
+        fontSize: 12,
+        alignContent: "center",
+        color: "#fff",
+        
+    },
+    meal_date: {
+        flexDirection: "row",
+        width: 192,
+        alignContent: "center",
     },
 });
 

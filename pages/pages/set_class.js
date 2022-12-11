@@ -8,7 +8,7 @@ import {
 } from "../../assets/scripts/AsyncStorage";
 import { Cmodal } from "../../assets/components/Custom_modal";
 import { Tbutton } from "../../assets/components/Button";
-import { value } from "deprecated-react-native-prop-types/DeprecatedTextInputPropTypes";
+
 
 function Setclass({ navigation }) {
     // Get school list
@@ -61,11 +61,13 @@ function Setclass({ navigation }) {
                         value={gradeNM}
                         error={error_g}
                         maxLength={2}
+                        placeholder="학년"
                     ></Tinput>
                 </View>
                 <View style={styles.input2}>
                     <Tinput
                         text="반"
+                        placeholder="반"
                         call={setClass}
                         type="number-pad"
                         value={classNM}
@@ -94,10 +96,11 @@ function Setclass({ navigation }) {
                     setAll();
                     navigation.navigate("SetComplete");
                     setModal(false);
-                    Vibration.vibrate([0, 50, 50, 50]);
+                    Vibration.vibrate([0, 5, 5, 5]);
                 }}
                 ok_text="네"
                 visible={modal_open}
+                
             >
                 <View>
                     <Text style={styles.modal_con_title}>학교 이름</Text>

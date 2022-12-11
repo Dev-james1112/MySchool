@@ -1,9 +1,18 @@
-import React, { useState } from "react";
-import { Text, StyleSheet, TouchableOpacity, Modal, View } from "react-native";
+import React from "react";
+import { Text, StyleSheet,  Modal, View, TouchableOpacity } from "react-native";
 import { Tbutton, Sbutton } from "./Button";
-
+import { useFonts } from "expo-font";
+import { StatusBar } from 'expo-status-bar';
 
 const Cmodal = (props) => {
+    const [loaded] = useFonts({
+        NotoSansBlack: require("../../assets/fonts/NotoSansKRBlack.otf"),
+        NotoSansBold: require("../../assets/fonts/NotoSansKRBold.otf"),
+        NotoSansLight: require("../../assets/fonts/NotoSansKRLight.otf"),
+        NotoSansMedium: require("../../assets/fonts/NotoSansKRMedium.otf"),
+        NotoSansRegular: require("../../assets/fonts/NotoSansKRRegular.otf"),
+        NotoSansThin: require("../../assets/fonts/NotoSansKRThin.otf"),
+    });
     return (
         <Modal
             animationType="none"
@@ -11,6 +20,7 @@ const Cmodal = (props) => {
             visible={props.visible}
             onRequestClose={props.close}
         >
+            <TouchableOpacity activeOpacity={1} onPress={props.close} style={styles.modal_background}></TouchableOpacity>
             <View style={styles.modal_view}>
                 <View style={styles.modal_con}>
                     <Text style={styles.modal_title}>{props.title}</Text>
@@ -50,7 +60,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: "flex-end",
         alignItems: "center",
-        backgroundColor: "rgba(0,0,0,0.5)",
     },
     modal_con: {
         padding: 30,
@@ -63,19 +72,23 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 30,
     },
     modal_title: {
-        fontSize: 24,
+        fontSize: 22,
         color: "#000",
-        fontWeight: "bold",
+        fontFamily: "NotoSansBold",
+        lineHeight: 28,
     },
     modal_sub_title: {
-        fontSize: 16,
+        fontSize: 12,
         color: "#595959",
         marginTop: 4,
+        fontFamily: "NotoSansMedium",
+        lineHeight: 16,
     },
     modal_school_name: {
         fontSize: 22,
         color: "#000",
-        fontWeight: "bold",
+        fontFamily: "NotoSansBold",
+        lineHeight: 28,
         marginTop: 2,
     },
     modal_school_con: {
@@ -83,6 +96,8 @@ const styles = StyleSheet.create({
     },
     modal_school_name_title: {
         fontSize: 16,
+        fontFamily: "NotoSansMedium",
+        lineHeight: 22,
         color: "#595959",
     },
     modal_btn_con: {
@@ -105,6 +120,14 @@ const styles = StyleSheet.create({
         height: "100%",
         width: "100%",
     },
+    modal_background: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "rgba(0,0,0,0.5)",
+    }
 });
 
 export { Cmodal };

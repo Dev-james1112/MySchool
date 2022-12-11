@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, Text, Linking,Vibration } from "react-native";
 
 import { Ttext, Stext } from "../../assets/components/Text";
 import { Tbutton } from "../../assets/components/Button";
-import { Cmodal, Smodal } from "../../assets/components/Custom_modal";
+import { Cmodal } from "../../assets/components/Custom_modal";
 import content from "../../assets/images/school.png";
 
 function Main({ navigation }) {
@@ -30,7 +30,10 @@ function Main({ navigation }) {
           ok={() => {
             navigation.navigate("Set");
             SetModal(false);
-            Vibration.vibrate([0, 50, 50, 50]);
+            Vibration.vibrate([0, 2, 0, 2]);
+          }}
+          close={() => {
+            SetModal(false);
           }}
         >
           <>
@@ -62,7 +65,7 @@ function Main({ navigation }) {
         </Cmodal>
         <Tbutton
           footer="지금 바로 시작해볼까요?"
-          call={() => {Vibration.vibrate([0, 10 ]);SetModal(true)}}
+          call={() => {Vibration.vibrate([0, 2 ]);SetModal(true)}}
         >
           시작하기
         </Tbutton>
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     height: "100%",
     wight: "100%",
-    paddingHorizontal: 25,
+    paddingHorizontal: 24,
     paddingTop: 60,
   },
   footer: {

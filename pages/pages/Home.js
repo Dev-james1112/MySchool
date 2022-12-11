@@ -10,21 +10,27 @@ import {
 import { loadSchool } from "../../assets/scripts/AsyncStorage";
 import more_icon from "../../assets/images/more_ico.png";
 import { getTime } from "../../assets/scripts/today";
-import { getMidSchoolTimeTable } from "../../assets/scripts/timetable";
-import { interpolate } from "react-native-reanimated";
+import { getMidSchoolTimeTable, getElsSchoolTimeTable, getHidSchoolTimeTable } from "../../assets/scripts/timetable";
+import { useFonts } from 'expo-font';
 
 function Home({ navigation }) {
+
     const [school_NM_data, setSchool_NM_data] = useState();
     const [school_ID_data, setSchool_ID_data] = useState();
     const [school_REGION_data, setSchool_REGION_data] = useState();
     const [school_REGION_NM_data, setSchool_REGION_NM_data] = useState();
+    const [school_KND_data, setSchool_KND_data] = useState();
     const [meal_data, setMeal_data] = useState("등록된 정보가 없어요.");
     const [error, setError] = useState(true);
     let keyCount = 0;
-    loadSchool("@NM").then((data) => setSchool_NM_data(data));
-    loadSchool("@ID").then((data) => setSchool_ID_data(data));
-    loadSchool("@REGION").then((data) => setSchool_REGION_data(data));
-    loadSchool("@REGION_NM").then((data) => setSchool_REGION_NM_data(data));
+    useEffect(() => {
+        console.log("asdf")
+        loadSchool("@NM").then((data) => setSchool_NM_data(data));
+        loadSchool("@ID").then((data) => setSchool_ID_data(data));
+        loadSchool("@REGION").then((data) => setSchool_REGION_data(data));
+        loadSchool("@REGION_NM").then((data) => setSchool_REGION_NM_data(data));
+        loadSchool("@KND").then((data) => setSchool_KND_data(data));
+    }, [school_REGION_NM_data]);
     const [timeTableData, setTimeTableData] = useState(
         [],
         [],
@@ -35,48 +41,39 @@ function Home({ navigation }) {
         []
     );
     let timeTableComponent = [[], [], [], [], []];
-    const key = "6c8bda44c1d949b88a48a7d0bb3a8205";
 
+    const key = "6c8bda44c1d949b88a48a7d0bb3a8205";
     const url1 = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${key}&TYPE=json&pIndex=1&pSize=1&SD_SCHUL_CODE=${school_ID_data}&ATPT_OFCDC_SC_CODE=${school_REGION_data}&MLSV_FROM_YMD=${getTime()}&MLSV_TO_YMD=${getTime()}`;
 
     useEffect(() => {
-        //console.log(timeTableData);
-        /*
-        setTimeTableDayData(timeTableDataTmp);
-        timeTableData.map((d) => {
-            //console.log(d);
-            timeTableDataTmp[timeTableData.indexOf(d)] = "";
-            d.map((a) => {
-                if (a != undefined) {
-                    console.log(a, timeTableData.indexOf(d));
-
-                    timeTableDataTmp[timeTableData.indexOf(d)].push(
-                        <View
-                            key={timeTableData.indexOf(d)}
-                            style={styles.TimeTableTextBox}
-                        >
-                            <Text>{a + " "}</Text>
-                        </View>
-                    );
-                    setTimeTableDayData(timeTableDataTmp);
-                }
-            });
-            timeTableDataTmp[timeTableData.indexOf(d)] = "";
-        });
-
-        timeTableDataTmp = [[""], [""], [""], [""], [""]];
-        console.log(timeTableDayData);
-        */
-        //console.log( timeTableDayData);
         async function getTimeTable() {
-            await getMidSchoolTimeTable(
-                school_REGION_data,
-                school_ID_data
-            ).then((d) => {
-                setTimeTableData(d);
-            });
+            if (school_KND_data == "초등학교") {
+                await getElsSchoolTimeTable(
+                    school_REGION_data,
+                    school_ID_data
+                ).then((d) => {
+                    setTimeTableData(d);
+                });
+            } else if (school_KND_data == "중학교") {
+                console.log("asdfasdfasd")
+                await getMidSchoolTimeTable(
+                    school_REGION_data,
+                    school_ID_data
+                ).then((d) => {
+                    setTimeTableData(d);
+                    
+                });
+            } else if (school_KND_data == "고등학교") {
+                await getHidSchoolTimeTable(
+                    school_REGION_data,
+                    school_ID_data
+                ).then((d) => {
+                    setTimeTableData(d);
+                });
+            }
+            
         }
-        getTimeTable();
+        
 
         fetch(url1)
             .then((res) => res.json())
@@ -100,7 +97,8 @@ function Home({ navigation }) {
                     setError(true);
                 }
             });
-    }, [school_REGION_data, school_ID_data]);
+            getTimeTable();
+    }, [school_REGION_data, school_ID_data, school_KND_data]);
     timeTableData.map((d) => {
         d.map((a) => {
             try {
@@ -110,17 +108,30 @@ function Home({ navigation }) {
                         style={styles.TimeTableTextView}
                     >
                         <View key={keyCount} style={styles.TimeTableTextBox}>
-                            <Text style={styles.TimeTableText}>{a}</Text>
+                            <Text numberOfLines={2} style={styles.TimeTableText}>{a}</Text>
                         </View>
                     </View>
                 );
+
                 keyCount += 1;
             } catch {
                 console.log(" ");
             }
         });
     });
-    //console.log(timeTableComponent[0]);
+
+    const [loaded] = useFonts({
+        NotoSansBlack: require('../../assets/fonts/NotoSansKRBlack.otf'),
+        NotoSansBold: require('../../assets/fonts/NotoSansKRBold.otf'),
+        NotoSansLight: require('../../assets/fonts/NotoSansKRLight.otf'),
+        NotoSansMedium: require('../../assets/fonts/NotoSansKRMedium.otf'),
+        NotoSansRegular: require('../../assets/fonts/NotoSansKRRegular.otf'),
+        NotoSansThin: require('../../assets/fonts/NotoSansKRThin.otf'),
+    });
+    if (!loaded) {
+        return null;
+    }
+
     return (
         <View style={styles.screen}>
             <ScrollView style={styles.main}>
@@ -137,11 +148,10 @@ function Home({ navigation }) {
                 </View>
                 <View style={styles.school_con}>
                     <View style={styles.head}>
-                        <Text>
-                            <Text style={styles.header_school_text}>
-                                {school_NM_data}
-                            </Text>
+                        <Text style={styles.header_school_text}>
+                            {school_NM_data}
                         </Text>
+
                         <Text style={styles.header_sub_text}>
                             {school_REGION_NM_data}
                         </Text>
@@ -167,7 +177,7 @@ function Home({ navigation }) {
                 </View>
                 <View style={styles.con}>
                     <View style={styles.con_head}>
-                        <TouchableOpacity
+                        <View
                             onPress={() => navigation.navigate("Meal_more")}
                             style={styles.MainContent}
                         >
@@ -175,10 +185,6 @@ function Home({ navigation }) {
                                 <Text style={styles.con_header_text}>
                                     시간표
                                 </Text>
-                                <Image
-                                    source={more_icon}
-                                    style={styles.more_icon}
-                                />
                             </View>
                             <View
                                 style={
@@ -215,7 +221,7 @@ function Home({ navigation }) {
                                     </Text>
                                 </View>
                             </View>
-                        </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
                 <View style={styles.ScreenBlank}></View>
@@ -227,31 +233,34 @@ function Home({ navigation }) {
 const styles = StyleSheet.create({
     main: {
         backgroundColor: "#FFF",
-
         wight: "100%",
-        paddingHorizontal: 25,
-
+        paddingHorizontal: 24,
         paddingBottom: 50,
     },
     header_sub_text: {
         fontSize: 12,
         color: "#F2F2F2",
+        fontFamily: "NotoSansRegular",
+        lineHeight: 18,
     },
     header_school_text: {
-        fontWeight: "bold",
         fontSize: 22,
-        lineHeight: 30,
         color: "#F2F2F2",
+        fontFamily: "NotoSansBold",
+        lineHeight: 30,
     },
     ScreenBlank: {
         height: 100,
     },
     error_text: {
-        fontSize: 18,
+        fontSize: 20,
+        fontFamily: "NotoSansRegular",
         color: "#515151",
         textAlign: "center",
         lineHeight: 50,
         paddingVertical: 20,
+        
+
     },
     change_school: {
         flex: 1,
@@ -260,9 +269,9 @@ const styles = StyleSheet.create({
         paddingRight: 10,
     },
     change_school_text: {
-        fontWeight: "bold",
         fontSize: 17,
         color: "#808080",
+        fontFamily: "NotoSansBold",
     },
     gnb: {
         paddingTop: 55,
@@ -278,7 +287,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 31,
-        fontWeight: "bold",
+        fontFamily: "NotoSansBold",
+        lineHeight: 44,
     },
 
     con: {
@@ -291,11 +301,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     con_header_text: {
-        fontSize: 20,
-        fontWeight: "bold",
+        fontSize: 18,
+        fontFamily: "NotoSansBold",
         color: "#000",
         alignSelf: "center",
         flex: 1,
+        lineHeight: 25,
     },
     con_head: {
         alignContent: "center",
@@ -310,14 +321,15 @@ const styles = StyleSheet.create({
     more_icon: {
         height: 25,
         width: 25,
-        color: "#FFF    ",
+        color: "#FFF",
     },
     con_text: {
         marginTop: 20,
-        fontSize: 16,
+        fontSize: 15,
         color: "#515151",
         lineHeight: 20,
         width: "100%",
+        fontFamily: "NotoSansRegular",
     },
     TimeTableDayBox: {
         marginTop: 10,
@@ -337,20 +349,20 @@ const styles = StyleSheet.create({
     },
     TimeTableDay: {
         width: "20%",
-        fontSize: 12,
+        fontSize: 11,
+        fontFamily: "NotoSansRegular",
+        lineHeight: 15,
         color: "#515151",
         justifyContent: "space-between",
         textAlign: "center",
     },
     TimeTableData: {
         width: "20%",
-        fontSize: 16,
         color: "#515151",
         justifyContent: "space-between",
         textAlign: "center",
         flexDirection: "row-reverse",
         flexWrap: "wrap",
-
         borderBottomColor: "#D9D9D9",
         borderBottomWidth: 1,
         borderTopColor: "#D9D9D9",
@@ -364,7 +376,6 @@ const styles = StyleSheet.create({
     TimeTableTextBox: {
         width: "10%",
         height: 70,
-
         alignItems: "center",
         flex: 1,
         borderRadius: 6,
@@ -378,6 +389,9 @@ const styles = StyleSheet.create({
         width: 60,
         textAlign: "center",
         fontSize: 10,
+        fontFamily: "NotoSansRegular",
+        lineHeight: 15,
+        height: 20,
     },
 
     TimeTableTextView: {
@@ -388,6 +402,7 @@ const styles = StyleSheet.create({
         borderRightWidth: 1,
         borderRightColor: "#D9D9D9",
     },
+    TimeTableTextViewNoBorder: {},
 });
 
 export default Home;
